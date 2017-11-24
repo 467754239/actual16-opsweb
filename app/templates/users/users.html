@@ -1,0 +1,73 @@
+{% extends "layout.html" %}
+
+{{ super() }}
+
+{% block breadcrumb %}
+用户管理
+{% endblock %}
+
+{% block content %}
+
+
+<div class="table-toolbar">
+    <div class="btn-group pull-left">
+    	<a href="/users/add">
+    	<button data-toggle="modal"
+    			class="btn btn-circle orange btn-outline" data-toggle="modal" data-target=".bs-example-modal-lg"> 添加用户
+    		<i class="fa fa-plus"></i>
+    	</button>
+    	</a>
+    </div>
+    
+    <div class="btn-group pull-right">
+    	<form class="form-inline" style="float: right" method="get" action="/users">
+    	    <div class="form-group">
+    	    	<input class="form-control" type="text" name="search" placeholder="搜索" autocomplete="off">
+    		<button type="submit" class="btn btn-primary">查询</button>
+    	    </div>	
+    	</form>
+    </div>
+</div>
+
+
+<div class="portlet">
+    <div class="portlet-body">
+        <div class="table-scrollable">
+            <table class="table table-striped table-bordered table-advance table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>用户名</th>
+                        <th>邮箱</th>
+                        <th>密码</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+            
+                <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td class="highlight">
+                            <div class="info"> </div>
+                            <a href="javascript:;"> {{ user[0] }} </a>
+                        </td>
+                        <td class="hidden-xs"> {{ user[1] }}</td>
+                        <td class="hidden-xs"> {{ user[2] }} </td>
+                        <td> {{ user[3] }} </td>
+                        <td>
+                            <a href="/users/edit?username={{ user[1] }}" class="btn btn-outline btn-circle green btn-sm purple">
+                            	<i class="fa fa-edit"></i> Edit </a>
+                            <a href="/users/{{ user[0] }} " class="btn btn-outline btn-circle dark btn-sm black">
+                            	<i class="fa fa-trash-o"></i> Delete </a>
+                        </td>
+                    </tr>
+                {% endfor %}	
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}
