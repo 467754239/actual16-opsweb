@@ -1,6 +1,8 @@
 
-import md5
+import hashlib
 
 
 def encryption(data):
-    return md5.md5(data).hexdigest()
+    m = hashlib.md5()
+    m.update(data)
+    return m.hexdigest()
