@@ -5,6 +5,7 @@ from flask import redirect
 from functools import wraps
 
 from .users import get_password_from_username
+from .crypt import encryption
 
 def login_required(func):
 
@@ -24,7 +25,7 @@ def authentication(username, password):
     if not tuple_password:
         return 'Username: %s not register.' % username, False
 
-    if password != tuple_password[0][0]:
+    if password != encryption(tuple_password[0][0]):
         return 'Username: %s, bad password' % username, False 
 
     return None, True

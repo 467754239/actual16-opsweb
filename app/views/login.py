@@ -31,7 +31,7 @@ def login():
         username = request.form['username']
         password = request.form['password']
         loginInfo, ok = authentication(username, password)
-        app.logger.info('login info:%s, ok:%s' % (loginInfo, ok))
+        #app.logger.info('login info:%s, ok:%s, current_user:%s' % (loginInfo, ok, request.user))
         if ok:
             session['sign'] = username
             return redirect("/")

@@ -19,8 +19,7 @@ manager = Manager(app)
 # Logging Handler
 handler = logging.FileHandler(app.config['LOGFILE'], encoding='UTF-8')
 handler.setLevel(logging.DEBUG)
-logging_format = logging.Formatter(
-        '[%(asctime)s] - [%(threadName)5s] - [%(filename)s-line:%(lineno)d] [%(levelname)s] %(message)s')
+logging_format = logging.Formatter('[%(asctime)s] - [%(threadName)5s] - [%(filename)s-line:%(lineno)d] [%(levelname)s] %(message)s')
 handler.setFormatter(logging_format)
 app.logger.addHandler(handler)
 

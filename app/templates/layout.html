@@ -17,10 +17,10 @@
         <link href="/static/css/main_define.css" rel="stylesheet" id="style_components" type="text/css" />
         <link href="/static/imgs/favicon.ico" rel="shortcut icon" /> 
         	
-        {% block css%}{% endblock %}
+        {% block csshref%}{% endblock %}
         
         <style>
-        {% block head %}{% endblock %}
+        {% block css %}{% endblock %}
         </style>
     </head>
 
@@ -46,7 +46,7 @@
                         <li class="dropdown dropdown-user">
                             <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                                 <img alt="" class="img-circle" src="/static/layouts/layout/img/avatar3_small.jpg" />
-                                <span class="username username-hide-on-mobile"> actual6 </span>
+                                <span class="username username-hide-on-mobile"> {{ session['sign'] }} </span>
                                 <i class="fa fa-angle-down"></i>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-default">
