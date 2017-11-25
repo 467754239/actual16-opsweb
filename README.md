@@ -19,3 +19,12 @@ pip freeze > requirements.txt
 ```python
 pip install -r requirement.txt
 ```
+
+
+## flask-mail
+
+```python
+https://pythonhosted.org/Flask-Mail/
+
+https://github.com/eugene-eeo/mailthon
+```
