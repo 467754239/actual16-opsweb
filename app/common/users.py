@@ -1,6 +1,7 @@
 
 
 from app.models import execute_sql
+from app.models import select_result
 from app.models import select_all_result
 
 
@@ -22,5 +23,6 @@ def userDel(uid):
     print sql
     return execute_sql(sql)
 
-
-
+def get_password_from_username(username):
+    sql = '''SELECT PASSWORD FROM users WHERE username = '%s';''' % username
+    return select_result(sql)

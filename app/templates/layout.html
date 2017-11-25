@@ -181,9 +181,11 @@
         <script src="/static/layouts/global/scripts/quick-sidebar.min.js" type="text/javascript"></script>
         <script src="/static/layouts/global/scripts/quick-nav.min.js" type="text/javascript"></script>
         <script src="/static/js/main_define.js" type="text/javascript"></script>
+        {% block scriptsrc %}
+        {% endblock %}
 
         <script>
-            {% block js %}
+            {% block script %}
             {% endblock %}
         </script>
         <!-- END SCRIPTS -->

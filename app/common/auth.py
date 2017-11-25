@@ -4,6 +4,7 @@ from flask import session
 from flask import redirect
 from functools import wraps
 
+from .users import get_password_from_username
 
 def login_required(func):
 
@@ -19,4 +20,11 @@ def login_required(func):
 
 def authentication(username, password):
 
-    return True
+    tuple_password = get_password_from_username(username)
+    if not tuple_password:
+        return 'Username: %s not register.' % username, False
+
+    if password != tuple_password[0][0]:
+        return 'Username: %s, bad password' % username, False 
+
+    return None, True

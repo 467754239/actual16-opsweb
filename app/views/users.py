@@ -15,14 +15,22 @@ from app import app
 mod = Blueprint('users', __name__)
 
 
-@mod.route('/users', methods=['GET'])
+@mod.route('/users', methods=['GET', 'POST'])
 def users():
-    app.logger.info('info log--------------------------')
-    if not session.get('sign', None):
-        return redirect('/login')
-    search_value = request.args.get("search")
-    if search_value:
-        users = get_user(search_value)
-    else:
-        users = get_users()
-    return render_template('users/users.html', users=users)
+
+    if request.method == 'GET':
+        app.logger.info('info log--------------------------')
+        if not session.get('sign', None):
+            return redirect('/login')
+        search_value = request.args.get("search")
+        if search_value:
+            users = get_user(search_value)
+        else:
+            users = get_users()
+        return render_template('users/users.html', users=users)
+
+    elif request.method == 'POST':
+        
+        app.logger.info(request.form)
+        retdata = {'code' : 0, 'data' : None, 'message' : 'add user sucess.'}
+        return jsonify(retdata)

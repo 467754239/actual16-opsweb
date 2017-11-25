@@ -13,6 +13,8 @@ from flask import abort
 from flask_mail import Message
 
 from app import mail
+from app import app
+from app.common.auth import login_required 
 from app.common.auth import authentication
 
 
@@ -22,17 +24,26 @@ mod = Blueprint('login', __name__)
 @mod.route('/login', methods=['GET', 'POST'])
 def login():
 
-    msg = Message("Hello", sender="13260071987@163.com", recipients=["467754239@qq.com"])
-    mail.send(msg)
+    #msg = Message("Hello", sender="13260071987@163.com", recipients=["467754239@qq.com"])
+    #mail.send(msg)
 
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        if authentication(username, password):
+        loginInfo, ok = authentication(username, password)
+        app.logger.info('login info:%s, ok:%s' % (loginInfo, ok))
+        if ok:
             session['sign'] = username
             return redirect("/")
         else:
-            errmsg = "Incorrect username or password."
-            return render_template('login.html', errmsg=errmsg)
+            return render_template('login.html', errmsg=loginInfo)
     else:
         return render_template('login.html')
+
+
+
+@mod.route('/logout', methods=['GET', 'POST'])
+@login_required
+def logout():
+    session.clear()
+    return redirect('/login')
