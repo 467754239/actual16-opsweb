@@ -26,11 +26,11 @@ app.logger.addHandler(handler)
 
 # DB connect
 conn = mdb.connect(
-          host     = '127.0.0.1',
-          user     = 'root',
-          passwd   = '123456',
-          db       = 'actual16',
-          charset  = 'utf8' 
+          host     = app.config['MYSQLHOST'],
+          user     = app.config['MYSQLUSER'],
+          passwd   = app.config['MYSQLPASS'],
+          db       = app.config['MYSQLDB'],
+          charset  = app.config['MYSQLCHARSET'] 
       )
 
 cursor = conn.cursor()
@@ -43,10 +43,12 @@ app.config['cursor'] = cursor
 from app.views import dashboard
 from app.views import login 
 from app.views import users 
+from app.views import assets
 
 
 
 app.register_blueprint(dashboard.mod) 
 app.register_blueprint(login.mod) 
 app.register_blueprint(users.mod) 
+app.register_blueprint(assets.mod) 
 

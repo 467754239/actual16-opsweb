@@ -8,7 +8,7 @@ from .crypt import encryption
 
 def registerUser(data):
     cry_passwd = encryption(data['password'])
-    sql = '''INSERT INTO users(username, email, password) values('%s', '%s', '%s')''' % (data['username'], data['email'], cry_passwd)
+    sql = '''INSERT INTO users(username, email, password, role) values('%s', '%s', '%s', '%s')''' % (data['username'], data['email'], cry_passwd, data['role'])
     print sql
     return execute_sql(sql)
 
@@ -30,11 +30,16 @@ def userDel(uid):
     return execute_sql(sql)
 
 def get_password_from_username(username):
-    sql = '''SELECT PASSWORD FROM users WHERE username = '%s';''' % username
+    sql = '''SELECT password FROM users WHERE username = '%s';''' % username
     return select_result(sql)
 
 def updateUserinfo(data):
-    sql = '''UPDATE users SET username='%s', email='%s', password='%s' WHERE id='%s'; ''' % (data['username'], data['email'], data['password'], data['uid'])
+    sql = '''UPDATE users SET username='%s', email='%s', password='%s', role='%s' WHERE id=%d; ''' % (data['username'], data['email'], data['password'], data['role'], int(data['uid']) )
 
     print sql
     return execute_sql(sql)
+
+
+def get_role_from_username(username):
+    sql = '''SELECT role FROM users WHERE username = '%s';''' % username
+    return select_result(sql)

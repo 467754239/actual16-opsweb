@@ -42,6 +42,7 @@ def users():
         app.logger.info(request.form)
 
         data = request.form.to_dict()
+        app.logger.info('data:%s' % data)
         effect_record = registerUser(data)
 
         app.logger.info('register user result:%s, type:%s' % (effect_record, type(effect_record)) )
@@ -65,7 +66,7 @@ def users_info():
         userinfo = get_user_from_uid(uid)
         app.logger.info(userinfo)
         if userinfo:
-            retdata = {'code' : 0, 'data' : userinfo[0], 'message' : None}
+            retdata = {'code' : 0, 'data' : userinfo, 'message' : None}
         else:
             retdata = {'code' : -1, 'data' : None, 'message' : 'not found.'}
     else:

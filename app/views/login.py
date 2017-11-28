@@ -16,6 +16,7 @@ from app import mail
 from app import app
 from app.common.auth import login_required 
 from app.common.auth import authentication
+from app.common.users import get_role_from_username
 
 
 mod = Blueprint('login', __name__)
@@ -31,9 +32,11 @@ def login():
         username = request.form['username']
         password = request.form['password']
         loginInfo, ok = authentication(username, password)
-        #app.logger.info('login info:%s, ok:%s, current_user:%s' % (loginInfo, ok, request.user))
+        app.logger.info('login info:%s, ok:%s' % (loginInfo, ok))
         if ok:
-            session['sign'] = username
+            role = get_role_from_username(username)
+            print role
+            session['sign'] = { 'username' : username, 'role' : role[0] }
             return redirect("/")
         else:
             return render_template('login.html', errmsg=loginInfo)

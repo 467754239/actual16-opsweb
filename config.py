@@ -11,7 +11,8 @@ LOGFILE = os.path.join(_basedir, 'logs/flask.log')
 # MYSQL
 MYSQLHOST     = '127.0.0.1'
 MYSQLPORT     = 3306
-MYSQLDB       = 'actual16'
+#MYSQLDB       = 'actual16'
+MYSQLDB       = 'actual16_opsweb'
 MYSQLUSER     = 'root'
 MYSQLPASS     = '123456'
 MYSQLCHARSET  = 'utf8'

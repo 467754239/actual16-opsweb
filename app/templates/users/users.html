@@ -38,6 +38,7 @@
                         <th>用户名</th>
                         <th>邮箱</th>
                         <th>密码</th>
+                        <th>权限</th>
                         <th>操作</th>
                     </tr>
                 </thead>
@@ -51,14 +52,18 @@
                         <td class="hidden-xs"> {{ user[1] }}</td>
                         <td class="hidden-xs"> {{ user[2] }} </td>
                         <td> {{ user[3] }} </td>
+                        <td> {{ user[4] }} </td>
                         <td>
-                            <button class="btn btn-outline btn-circle green btn-sm purple editbtn" uid={{ user[0] }}><i class="fa fa-edit"></i> Edit</button>
-                            <!--<a href="/users/edit?username={{ user[1] }}" class="btn btn-outline btn-circle green btn-sm purple">
-                            	<i class="fa fa-edit"></i> Edit </a>-->
-                            <!--<button class="btn btn-outline btn-circle dark btn-sm black delbtn" uid={{ user[0] }}><i class="fa fa-edit"></i> Delete</button>-->
-                            <button class="btn btn-outline btn-circle dark btn-sm black delbtn" uid={{ user[0] }}><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete</button>
-                            <!--<a href="/users/del?uid={{ user[0] }} " class="btn btn-outline btn-circle dark btn-sm black">
-                            	<i class="fa fa-trash-o"></i> Delete </a>-->
+                            {% if session['sign']['role'] == 'super_admin' %}
+                                <button class="btn btn-outline btn-circle green btn-sm purple editbtn" uid={{ user[0] }}><i class="fa fa-edit"></i> Edit</button>
+                                <!--<a href="/users/edit?username={{ user[1] }}" class="btn btn-outline btn-circle green btn-sm purple">
+                                	<i class="fa fa-edit"></i> Edit </a>-->
+                                <!--<button class="btn btn-outline btn-circle dark btn-sm black delbtn" uid={{ user[0] }}><i class="fa fa-edit"></i> Delete</button>-->
+                                <button class="btn btn-outline btn-circle dark btn-sm black delbtn" uid={{ user[0] }}><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete</button>
+                                <!--<a href="/users/del?uid={{ user[0] }} " class="btn btn-outline btn-circle dark btn-sm black">
+                                	<i class="fa fa-trash-o"></i> Delete </a>-->
+                            {% endif %}
+                            <button class="btn btn-outline btn-circle dark btn-sm black infobtn" uid={{ user[0] }}><span class="glyphicon glyphicon-random" aria-hidden="true"></span> Info </button>
                         </td>
                     </tr>
                 {% endfor %}	
@@ -121,6 +126,20 @@
                          <div id='comparepasswd' style="color:red"></div>
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <label class="control-label">Role
+                        <span class="required" aria-required="true"> * </span>
+                    </label>
+                    <div>
+                        <select class="form-control" id='role'>
+                            <option name=''> ---请选择用户角色---</option>
+                            <option name='super_admin'> super_admin </option>
+                            <option name="common_user"> common_user </option>
+                        </select>
+                    </div>
+                </div>
+
 
 
                  <div class="modal-footer">
@@ -188,6 +207,18 @@
                     </div>
                 </div>
 
+                <div class="form-group">
+                    <label class="control-label">Role
+                        <span class="required" aria-required="true"> * </span>
+                    </label>
+                    <div>
+                        <select class="form-control" id='edit_role'>
+                            <option name=''> ---请选择用户角色---</option>
+                            <option name='super_admin'> super_admin </option>
+                            <option name="common_user"> common_user </option>
+                        </select>
+                    </div>
+                </div>
 
                  <div class="modal-footer">
                      <button type="button" class="btn btn-default" data-dismiss="modal">关闭
@@ -225,13 +256,14 @@ $("#addUser").on("click", function() {
         var email = $('#email').val().trim()
         var password = $('#password').val().trim()
         var rpassword = $('#rpassword').val().trim()
+        var role = $('#role').val().trim()
 
         if ( password != rpassword ) {
             alert('two password is inconsistent')
             return false
         }
 
-        data = {'username' : username, 'password' : password, 'email' : email}
+        data = {'username' : username, 'password' : password, 'email' : email, 'role' : role}
 
         $.post("/users", data, function(data) {
             console.log(data)
@@ -277,6 +309,11 @@ $('.editbtn').click(function(){
               $('#edit_password').attr('value', userinfo[3].trim())
               $('#edit_rpassword').attr('value', userinfo[3].trim())
 
+              var value= userinfo[4];
+              console.log(value)
+              //$("#edit_role").find("option[text=text]").attr("selected",true);
+              //$("select option[value='"+value+"']").attr("selected", "selected");  
+
 
               $('#btn_editsave').click(function(){
 
@@ -285,8 +322,9 @@ $('.editbtn').click(function(){
                   var email = $('#edit_email').val().trim()
                   var password = $('#edit_password').val().trim()
                   var rpassword = $('#edit_rpassword').val().trim()
+                  var role = $('#edit_role').val().trim()
 
-                  var data = {username : username, email : email, password : password, uid : uid}
+                  var data = {username : username, email : email, password : password, uid : uid, 'role' : role}
 
                   console.log(data);
 

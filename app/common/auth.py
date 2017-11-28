@@ -25,7 +25,9 @@ def authentication(username, password):
     if not tuple_password:
         return 'Username: %s not register.' % username, False
 
-    if encryption(password) != tuple_password[0][0]:
+    print tuple_password
+    print encryption(password)
+    if encryption(password) != tuple_password[0]:
         return 'Username: %s, bad password' % username, False 
 
     return None, True
