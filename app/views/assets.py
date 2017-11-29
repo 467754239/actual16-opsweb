@@ -28,7 +28,6 @@ def assets():
 
     if request.method == 'GET':
         assets = get_assets()
-        print assets
         return render_template('assets/assets.html', objs=assets)
 
     elif request.method == 'POST':
@@ -36,6 +35,6 @@ def assets():
         data.update({'update_time' : datetime.datetime.now()})
         app.logger.info('data:%s' % data)
 
-        print add_asset(data)
+        add_asset(data)
         return jsonify('')
 
