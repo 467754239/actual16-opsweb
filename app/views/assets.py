@@ -1,16 +1,13 @@
 #--*--coding: utf-8--*--
 
+import datetime
+
 from flask import Blueprint, render_template, session, redirect, url_for, \
      request, flash, g, jsonify, abort
 
 
-from app.common.auth import authentication
-from app.common.users import get_user
-from app.common.users import get_users
-from app.common.users import userDel
-from app.common.users import registerUser 
-from app.common.users import get_user_from_uid 
-from app.common.users import updateUserinfo 
+from app.common.assets import add_asset
+from app.common.assets import get_assets 
 
 from app import app
 from app.common.auth import login_required 
@@ -26,23 +23,19 @@ mod = Blueprint('assets', __name__)
     2. POST 增加用户
 '''
 @mod.route('/assets', methods=['GET', 'POST'])
-@login_required
+#@login_required
 def assets():
 
     if request.method == 'GET':
-        return render_template('assets/assets.html')
+        assets = get_assets()
+        print assets
+        return render_template('assets/assets.html', objs=assets)
 
     elif request.method == 'POST':
-        app.logger.info(request.form)
-
         data = request.form.to_dict()
+        data.update({'update_time' : datetime.datetime.now()})
         app.logger.info('data:%s' % data)
-        effect_record = registerUser(data)
 
-        app.logger.info('register user result:%s, type:%s' % (effect_record, type(effect_record)) )
-        if effect_record == 1:
-            retdata = {'code' : 0, 'data' : None, 'message' : 'add user sucess.'}
-        else:
-            retdata = {'code' : -1, 'data' : None, 'message' : 'add user failed.'}
-        return jsonify(retdata)
+        print add_asset(data)
+        return jsonify('')
 

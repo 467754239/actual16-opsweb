@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
@@ -42,19 +43,20 @@ def get_mem_info(noBufferCache=True):
             free = mem_free
             usage = mem_total - mem_free
 
-        return {'mem_total':mem_total, 'mem_free':free, 'mem_usage':usage}
+        #return {'mem_total':mem_total, 'mem_free':free, 'mem_usage':usage}
+        return {'mem_total':mem_total}
 
 def get_cpu_info():
-    cpu_info = {'cpu num' : 0, 'cpu model' : None}
+    cpu_info = {'cpu_num' : 0, 'cpu_model' : None}
     with open('/proc/cpuinfo', 'r') as f:
         for line in f:
             if line.startswith('processor'):
-                cpu_info['cpu num'] += 1
+                cpu_info['cpu_num'] += 1
             elif line.startswith('model name'):
-                cpu_info['cpu model'] = line.split(':')[1].strip()
+                cpu_info['cpu_model'] = line.split(':')[1].strip()
     return cpu_info
 
-def get_device_info():
+def get_device_info_mul():
     device_white = ['eth0', 'eth1']
     ret = []
     for device, info in psutil.net_if_addrs().items():
@@ -65,6 +67,12 @@ def get_device_info():
                 elif snic.family == 17:
                     mac = snic.address
             ret.append({'ip' : ip, 'mac' : mac})
+    return ret
+
+def get_device_info():
+    ret = {'public_ip' : '', 'private_ip' : ''}
+    addinfo = psutil.net_if_addrs()
+    ret['private_ip'] = addinfo['eth0'][0].address
     return ret
 
 def get_disk_info():
@@ -123,14 +131,16 @@ def execute(cmd):
     p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     return p.stdout.read()
 
-def send():
-    url = ''
-    r = requests.post(url=url, data=data)
+def send(data):
+    url = 'http://112.74.164.107:8000/assets'
+    req = requests.post(url=url, data=data)
+    print req.status_code
+    print req.text
 
 def run():
     data = {}
     data['hostname'] = get_hostname()
-    data['load'] = get_loadavg()
+    #data['load'] = get_loadavg()
 
     data.update(get_mem_info())
     data.update(get_cpu_info())
@@ -140,7 +150,7 @@ def run():
     data.update(get_rel_data())
     print json.dumps(data, indent=4)
     
-    #send(data)
+    send(data)
 
 if __name__ == '__main__':
     run()

@@ -32,37 +32,48 @@
                     <tr>
                         <th>#</th>
                         <th>主机名</th>
+                        <th>内网IP</th>
+                        <th>外网IP</th>
                         <th>内存</th>
-                        <th>磁盘</th>
-                        <th>CPU核数</th>
-                        <th>CPU厂商</th>
-                        <th>IP</th>
+                        <th>CPU核</th>
+                        <th>CPU model</th>
                         <th>制造商</th>
+                        <th>下线日期</th>
+                        <!--<th>服务器类型</th>
+                        <th>sn</th>-->
+                        <th>更新日期</th>
                         <th>操作</th>
                     </tr>
                 </thead>
             
                 <tbody>
-                {% for user in users %}
+                {% for obj in objs %}
                     <tr>
                         <td class="highlight">
                             {{ loop.index }}
                         </td>
-                        <td class="hidden-xs"> {{ user[1] }}</td>
-                        <td class="hidden-xs"> {{ user[2] }} </td>
-                        <td> {{ user[3] }} </td>
-                        <td> {{ user[4] }} </td>
+                        <td class="hidden-xs"> {{ obj[1] }}</td>
+                        <td class="hidden-xs"> {{ obj[2] }} </td>
+                        <td> {{ obj[3] }} </td>
+                        <td> {{ obj[4] }} </td>
+                        <td> {{ obj[5] }} </td>
+                        <td> {{ obj[6] }} </td>
+                        <td> {{ obj[7] }} </td>
+                        <td> {{ obj[8] }} </td>
+                        <!--<td> {{ obj[9] }} </td>
+                        <td> {{ obj[10] }} </td>-->
+                        <td> {{ obj[-1] }} </td>
                         <td>
                             {% if session['sign']['role'] == 'super_admin' %}
-                                <button class="btn btn-outline btn-circle green btn-sm purple editbtn" uid={{ user[0] }}><i class="fa fa-edit"></i> Edit</button>
-                                <!--<a href="/users/edit?username={{ user[1] }}" class="btn btn-outline btn-circle green btn-sm purple">
+                                <button class="btn btn-outline btn-circle green btn-sm purple editbtn" uid={{ obj[0] }}><i class="fa fa-edit"></i> Edit</button>
+                                <!--<a href="/users/edit?username={{ obj[1] }}" class="btn btn-outline btn-circle green btn-sm purple">
                                 	<i class="fa fa-edit"></i> Edit </a>-->
-                                <!--<button class="btn btn-outline btn-circle dark btn-sm black delbtn" uid={{ user[0] }}><i class="fa fa-edit"></i> Delete</button>-->
-                                <button class="btn btn-outline btn-circle dark btn-sm black delbtn" uid={{ user[0] }}><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete</button>
-                                <!--<a href="/users/del?uid={{ user[0] }} " class="btn btn-outline btn-circle dark btn-sm black">
+                                <!--<button class="btn btn-outline btn-circle dark btn-sm black delbtn" uid={{ obj[0] }}><i class="fa fa-edit"></i> Delete</button>-->
+                                <button class="btn btn-outline btn-circle dark btn-sm black delbtn" uid={{ obj[0] }}><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete</button>
+                                <!--<a href="/users/del?uid={{ obj[0] }} " class="btn btn-outline btn-circle dark btn-sm black">
                                 	<i class="fa fa-trash-o"></i> Delete </a>-->
                             {% endif %}
-                            <button class="btn btn-outline btn-circle dark btn-sm black infobtn" uid={{ user[0] }}><span class="glyphicon glyphicon-random" aria-hidden="true"></span> Info </button>
+                            <button class="btn btn-outline btn-circle dark btn-sm black infobtn" uid={{ obj[0] }}><span class="glyphicon glyphicon-random" aria-hidden="true"></span> Info </button>
                         </td>
                     </tr>
                 {% endfor %}	

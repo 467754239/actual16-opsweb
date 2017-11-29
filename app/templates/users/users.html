@@ -213,7 +213,6 @@
                     </label>
                     <div>
                         <select class="form-control" id='edit_role'>
-                            <option name=''> ---请选择用户角色---</option>
                             <option name='super_admin'> super_admin </option>
                             <option name="common_user"> common_user </option>
                         </select>
@@ -310,10 +309,7 @@ $('.editbtn').click(function(){
               $('#edit_rpassword').attr('value', userinfo[3].trim())
 
               var value= userinfo[4];
-              console.log(value)
-              //$("#edit_role").find("option[text=text]").attr("selected",true);
-              //$("select option[value='"+value+"']").attr("selected", "selected");  
-
+              $("#edit_role option[value='"+value+"']").attr("selected", "selected");  
 
               $('#btn_editsave').click(function(){
 
