@@ -4,8 +4,11 @@ from flask import session
 from flask import redirect
 from functools import wraps
 
+import requests
+
 from .users import get_password_from_username
 from .crypt import encryption
+
 
 def login_required(func):
 
@@ -31,3 +34,11 @@ def authentication(username, password):
         return 'Username: %s, bad password' % username, False 
 
     return None, True
+
+
+def github_auth(username, password):
+    '''
+    https://developer.github.com/v3/
+    '''
+    req = requests.get(url='https://api.github.com',auth=(username, password))
+    return None, req.ok

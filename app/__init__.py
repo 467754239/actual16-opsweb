@@ -5,13 +5,22 @@ import MySQLdb as mdb
 from flask_mail import Mail
 from flask import Flask, session, g, render_template
 from flask_script import Manager
+from flask_debugtoolbar import DebugToolbarExtension
 
 
 
 app = Flask(__name__)
 app.config.from_object('config')
-app.config['SECRET_KEY'] = 'oF\xd3I\x98\xe5\xb4\x1a\xfb\xc77\xe3\xcc,\xc2\xd2\x05\x8b\xa9\x9b\x01\xa0t\x0f\x04\x11\x19\xcd4\x96\x8d\x14'
+
+# the toolbar is only enabled in debug mode:
 app.debug = True
+
+# set a 'SECRET_KEY' to enable the Flask session cookies
+app.config['SECRET_KEY'] = 'oF\xd3I\x98\xe5\xb4\x1a\xfb\xc77\xe3\xcc,\xc2\xd2\x05\x8b\xa9\x9b\x01\xa0t\x0f\x04\x11\x19\xcd4\x96\x8d\x14'
+
+toolbar = DebugToolbarExtension(app)
+app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
+
 
 mail = Mail(app)
 manager = Manager(app)

@@ -15,6 +15,7 @@ from flask_mail import Message
 from app import mail
 from app import app
 from app.common.auth import login_required 
+from app.common.auth import github_auth 
 from app.common.auth import authentication
 from app.common.users import get_role_from_username
 
@@ -32,11 +33,14 @@ def login():
         username = request.form['username']
         password = request.form['password']
         loginInfo, ok = authentication(username, password)
+        github_loginInfo, github_ok = github_auth(username, password)
         app.logger.info('login info:%s, ok:%s' % (loginInfo, ok))
-        if ok:
+        if ok or github_ok:
             role = get_role_from_username(username)
-            print role
-            session['sign'] = { 'username' : username, 'role' : role[0] }
+            if role:
+                session['sign'] = { 'username' : username, 'role' : role[0] }
+            else:
+                session['sign'] = { 'username' : username, 'role' : None }
             return redirect("/")
         else:
             return render_template('login.html', errmsg=loginInfo)
