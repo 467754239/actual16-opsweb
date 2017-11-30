@@ -5,6 +5,7 @@ import MySQLdb as mdb
 from flask_mail import Mail
 from flask import Flask, session, g, render_template
 from flask_script import Manager
+from flaskext.markdown import Markdown
 from flask_debugtoolbar import DebugToolbarExtension
 
 
@@ -21,7 +22,7 @@ app.config['SECRET_KEY'] = 'oF\xd3I\x98\xe5\xb4\x1a\xfb\xc77\xe3\xcc,\xc2\xd2\x0
 toolbar = DebugToolbarExtension(app)
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
-
+Markdown(app)
 mail = Mail(app)
 manager = Manager(app)
 

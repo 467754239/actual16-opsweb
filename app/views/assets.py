@@ -35,6 +35,9 @@ def assets():
         data.update({'update_time' : datetime.datetime.now()})
         app.logger.info('data:%s' % data)
 
-        add_asset(data)
-        return jsonify('')
-
+        effect_line = add_asset(data)
+        if effect_line == 1:
+            retdata = {'code' : 0, 'data' : None, 'message' : 'add asset sucess.'}
+        else:
+            retdata = {'code' : 0, 'data' : None, 'message' : 'add asset failed.'}
+        return jsonify(retdata)
