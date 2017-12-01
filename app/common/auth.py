@@ -1,6 +1,7 @@
 
 
 from flask import session
+from flask import request 
 from flask import redirect
 from functools import wraps
 
@@ -9,11 +10,16 @@ import requests
 from .users import get_password_from_username
 from .crypt import encryption
 
+from app import app
+
 
 def login_required(func):
 
     @wraps(func)
     def wrapper(*args, **kwargs):
+
+        app.logger.info('>>> auth headers: \n%s' % request.headers)
+        app.logger.info('>>> auth cookies: %s' % request.cookies)
 
         if not session.get('sign', None):
             return redirect('/login')

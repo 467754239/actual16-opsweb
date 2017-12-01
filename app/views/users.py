@@ -31,6 +31,10 @@ mod = Blueprint('users', __name__)
 def users():
 
     if request.method == 'GET':
+
+        app.logger.info('>>> users headers: \n%s' % request.headers)
+        app.logger.info('>>> users  cookies: %s' % request.cookies)
+
         users = get_users()
         return render_template('users/users.html', users=users)
 
