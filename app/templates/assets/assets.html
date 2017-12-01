@@ -70,7 +70,7 @@
                         <td> {{ obj[8] }} </td>
                         <td> {{ obj[-1] }} </td>
                         <td>
-                            {% if session['sign']['role'] == 'super_admin' %}
+                            {% if session['sign']['role'] == 'admin' %}
                                 <!--<button class="btn btn-outline btn-circle green btn-sm purple editbtn" uid={{ obj[0] }}><i class="fa fa-edit"></i> Edit</button>
                                 <button class="btn btn-outline btn-circle dark btn-sm black delbtn" uid={{ obj[0] }}><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete</button>-->
                                 <button type="button" class="btn btn-warning btn-sm edit_asset" uid={{ obj[0] }}>修改</button>
@@ -192,7 +192,19 @@ $("#btn_addsave").on("click", function() {
         $.post('/assets', retdata, function(response) {
             $("#add_asset_modal").modal('hide');
             if ( response.code == 0 ) {
-                swal(response.message, '', "success")
+                swal({ 
+                  title: "添加资产完成！",
+                  type: "info", 
+                  showCancelButton: true,
+                  closeOnConfirm: false, 
+                  showLoaderOnConfirm: true,
+                },
+                function(){ 
+                      setTimeout(function(){  
+                          swal(response.message);
+                      }, 2000);
+                      location.reload();
+                });
             } else {
                 swal(response.message, '', "error")
             };

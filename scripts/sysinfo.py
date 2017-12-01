@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
@@ -19,32 +18,13 @@ sys.setdefaultencoding('utf-8')
 def get_hostname():
     return socket.gethostname()
 
-def get_loadavg():
-    with open('/proc/loadavg', 'r') as f:
-        loadavg = f.readline().split()[0:3]
-        return loadavg[0]
 
 def get_mem_info(noBufferCache=True):
-    with open('/proc/meminfo', 'r') as f:
-        for line in f:
-            if line.startswith('MemTotal'):
-                mem_total = int(line.split(':')[1].split()[0])
-            elif line.startswith('MemFree'):
-                mem_free = int(line.split(':')[1].split()[0])
-            elif line.startswith('Buffers'):
-                mem_buffer = int(line.split(':')[1].split()[0])
-            elif line.startswith('Cached'):
-                mem_cached = int(line.split(':')[1].split()[0])
+    fd = open('/proc/meminfo', 'r')
+    mem_total = fd.readline().split()[1]
+    fd.close()
+    return {'mem_total': int(mem_total) / 1024}
 
-        if noBufferCache:
-            usage = mem_total - mem_free - mem_buffer - mem_cached
-            free = mem_free + mem_buffer + mem_cached
-        else:
-            free = mem_free
-            usage = mem_total - mem_free
-
-        #return {'mem_total':mem_total, 'mem_free':free, 'mem_usage':usage}
-        return {'mem_total':mem_total}
 
 def get_cpu_info():
     cpu_info = {'cpu_num' : 0, 'cpu_model' : None}
@@ -56,18 +36,6 @@ def get_cpu_info():
                 cpu_info['cpu_model'] = line.split(':')[1].strip()
     return cpu_info
 
-def get_device_info_mul():
-    device_white = ['eth0', 'eth1']
-    ret = []
-    for device, info in psutil.net_if_addrs().items():
-        if device in device_white:
-            for snic in info:
-                if snic.family == 2:
-                    ip = snic.address
-                elif snic.family == 17:
-                    mac = snic.address
-            ret.append({'ip' : ip, 'mac' : mac})
-    return ret
 
 def get_device_info():
     ret = {'public_ip' : '', 'private_ip' : ''}
@@ -85,7 +53,6 @@ def get_disk_info():
     for dev_line  in read_data.strip().split('\n'):
         if dev_line.startswith('WARNING'):
             continue
-        #print dev_line
         break
 
     return {}
@@ -105,6 +72,7 @@ def get_manufacturer():
         elif 'UUID' in line:
             ret['uuid'] = line.split(':')[1].lstrip()
     return ret
+
 
 def get_rel_data():
     # 出厂日期
@@ -140,7 +108,6 @@ def send(data):
 def run():
     data = {}
     data['hostname'] = get_hostname()
-    #data['load'] = get_loadavg()
 
     data.update(get_mem_info())
     data.update(get_cpu_info())
@@ -150,7 +117,7 @@ def run():
     data.update(get_rel_data())
     print json.dumps(data, indent=4)
     
-    send(data)
+    #send(data)
 
 if __name__ == '__main__':
     run()

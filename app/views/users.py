@@ -11,10 +11,10 @@ from app.common.users import userDel
 from app.common.users import registerUser 
 from app.common.users import get_user_from_uid 
 from app.common.users import updateUserinfo 
+from app.common.users import validate_user_exists
 
 from app import app
 from app.common.auth import login_required 
-
 
 
 mod = Blueprint('users', __name__)
@@ -30,27 +30,31 @@ mod = Blueprint('users', __name__)
 def users():
 
     if request.method == 'GET':
-        search_value = request.args.get("search")
-        app.logger.info('search_value:%s' % search_value)
-        if search_value:
-            users = get_user(search_value)
-        else:
-            users = get_users()
+        users = get_users()
         return render_template('users/users.html', users=users)
 
     elif request.method == 'POST':
-        app.logger.info(request.form)
-
         data = request.form.to_dict()
-        app.logger.info('data:%s' % data)
-        effect_record = registerUser(data)
 
+        # 删除不必要的字段
+        data.pop('rpassword', None)
+        app.logger.info('add user, data:%s' % data)
+
+        # 验证用户是否存在
+        username = data.get('username')
+        valid_info, valid_status = validate_user_exists( username )
+        print valid_info, valid_status
+        if valid_status:
+            response = {'data' : None, 'message' : valid_info, 'code' : -1}
+            return jsonify(response)
+
+        effect_record = registerUser(data)
         app.logger.info('register user result:%s, type:%s' % (effect_record, type(effect_record)) )
         if effect_record == 1:
-            retdata = {'code' : 0, 'data' : None, 'message' : 'add user sucess.'}
+            response = {'data' : None, 'message' : 'add user sucess.', 'code' : 0}
         else:
-            retdata = {'code' : -1, 'data' : None, 'message' : 'add user failed.'}
-        return jsonify(retdata)
+            response = {'data' : None, 'message' : 'add user failed.', 'code' : -1}
+        return jsonify(response)
 
 
 
@@ -60,18 +64,19 @@ def users():
 @login_required
 def users_info():
     app.logger.info(request.args)
-    retdata = []
+
     uid = request.args.get('uid', None)
-    if uid:
-        userinfo = get_user_from_uid(uid)
-        app.logger.info(userinfo)
-        if userinfo:
-            retdata = {'code' : 0, 'data' : userinfo, 'message' : None}
-        else:
-            retdata = {'code' : -1, 'data' : None, 'message' : 'not found.'}
+    if not uid:
+        response = {'data' : None, 'message' : valid_info, 'code' : -1}
+        return jsonify(response)
+
+    userinfo = get_user_from_uid(uid)
+    app.logger.info(userinfo)
+    if userinfo:
+        response = {'data' : userinfo, 'message' : None, 'code' : 0}
     else:
-        pass
-    return jsonify(retdata)
+        response = {'data' : "uid:%s not found." % uid, 'message' : None, 'code' : -1}
+    return jsonify(response)
 
 
 
@@ -84,15 +89,11 @@ def usersDel():
 
     uid = request.args.get('uid', None)
     effect_record = userDel(uid)
-    app.logger.info('delete user result:%s, type:%s' % (effect_record, type(effect_record)) )
-
-    if effect_record:
-        retdata = {'code' : 0, 'data' : None, 'message' : "delete sucess."}
+    if effect_record == 1:
+        response = {'data' : None, 'message' : 'delete user sucess.', 'code' : 0}
     else:
-        retdata = {'code' : -1, 'data' : None, 'message' : 'not found.'}
-   
-    return jsonify(retdata)
-
+        response = {'data' : None, 'message' : 'delete user failed.', 'code' : -1}
+    return jsonify(response)
 
 
 '''修改用户
@@ -100,15 +101,17 @@ def usersDel():
 @mod.route('/users/edit', methods=['POST'])
 @login_required
 def usersEdit():
-
     app.logger.info( request.form )
-    data = request.form.to_dict()
-    effect_record = updateUserinfo(data) 
-    app.logger.info( effect_record )
 
-    if effect_record:
-        retdata = {'code' : 0, 'data' : None, 'message' : "update sucess."}
+    data = request.form.to_dict()
+
+    data.pop('rpassword', None)
+    uid = data.pop('uid', None)
+
+    app.logger.info( "Update user, data:%s." % data )
+    effect_record = updateUserinfo(data, uid) 
+    if effect_record == 1:
+        response = {'data' : None, 'message' : 'update user sucess.', 'code' : 0}
     else:
-        retdata = {'code' : -1, 'data' : None, 'message' : 'not found.'}
-   
-    return jsonify(retdata)
+        response = {'data' : None, 'message' : 'not found.', 'code' : -1}
+    return jsonify(response)
