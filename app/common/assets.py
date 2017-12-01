@@ -20,3 +20,8 @@ def add_asset(data):
 def get_assets():
     sql = '''SELECT * FROM assets '''
     return select_all_result(sql)
+
+def assetDel(pk):
+    sql = '''DELETE FROM assets WHERE id = %s; ''' % int(pk)
+    print sql
+    return execute_sql(sql)

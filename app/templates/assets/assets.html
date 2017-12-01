@@ -59,7 +59,6 @@
                         <td class="hidden-xs"> {{ obj[1] }}</td>
                         <td class="hidden-xs"> 
                             <div class="fa fa-circle font-green-meadow breathe-btn"></div>
-                            <!--<div class="fa fa-circle font-red-thunderbird breathe-btn"></div>-->
                         </td>
                         <td class="hidden-xs"> {{ obj[2] }} </td>
                         <td> {{ obj[3] }} </td>
@@ -71,14 +70,10 @@
                         <td> {{ obj[-1] }} </td>
                         <td>
                             {% if session['sign']['role'] == 'admin' %}
-                                <!--<button class="btn btn-outline btn-circle green btn-sm purple editbtn" uid={{ obj[0] }}><i class="fa fa-edit"></i> Edit</button>
-                                <button class="btn btn-outline btn-circle dark btn-sm black delbtn" uid={{ obj[0] }}><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete</button>-->
-                                <button type="button" class="btn btn-warning btn-sm edit_asset" uid={{ obj[0] }}>修改</button>
-                                <button type="button" class="btn btn-danger btn-sm del_asset" uid={{ obj[0] }}>删除</button>
+                                <button type="button" class="btn btn-warning btn-sm edit_asset" pk={{ obj[0] }}>修改</button>
+                                <button type="button" class="btn btn-danger btn-sm del_asset" pk={{ obj[0] }}>删除</button>
                             {% endif %}
-                            <button type="button" class="btn btn-success btn-sm info_asset" uid={{ obj[0] }}>详情</button>
-                            <!--<button class="btn btn-outline btn-circle dark btn-sm black infobtn" uid={{ obj[0] }}><span class="glyphicon glyphicon-random" aria-hidden="true"></span> Info </button>-->
-                            
+                            <button type="button" class="btn btn-success btn-sm info_asset" pk={{ obj[0] }}>详情</button>
                         </td>
                     </tr>
                 {% endfor %}	
@@ -215,7 +210,10 @@ $("#btn_addsave").on("click", function() {
 
 // 删除资产
 $(".del_asset").click(function() {
-    alert('delete asset');
+    var pk= $(this).attr('pk')
+    $.get('/asset/del', {'pk' : pk}, function(data) {
+        swal("干得漂亮！", "删除记录成功！","success")
+    });
 });
 
 // 修改资产

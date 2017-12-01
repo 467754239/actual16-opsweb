@@ -44,56 +44,15 @@ def get_device_info():
     return ret
 
 def get_disk_info():
-    dev_white = ['/dev/xvda']
-
-    cmd = '''sudo fdisk -l | grep "磁盘" | egrep -v "gpt|dos|磁盘标识符"'''
-    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
-    read_data = p.stdout.read()
-
-    for dev_line  in read_data.strip().split('\n'):
-        if dev_line.startswith('WARNING'):
-            continue
-        break
-
-    return {}
-
-def get_manufacturer():
-    # 制造商信息
-    ret = {}
-    cmd = """/usr/sbin/dmidecode | grep -A6 'System Information'"""
-    data = execute(cmd)
-    for line in data.split('\n'):
-        if 'Manufacturer' in line:
-            ret['manufacturers'] = line.split(':')[1].lstrip()
-        elif 'Product Name' in line:
-            ret['server_type'] = line.split(':')[1].lstrip()
-        elif 'Serial Number' in line:
-            ret['sn'] = line.split(':')[1].lstrip()
-        elif 'UUID' in line:
-            ret['uuid'] = line.split(':')[1].lstrip()
-    return ret
-
-
-def get_rel_data():
-    # 出厂日期
-    cmd = """/usr/sbin/dmidecode | grep -i release"""
-    data = execute(cmd)
-    date = data.split()[-1].replace('/','-')
-    return {'leave_date' : date}
+    deviceinfo = [ obj.mountpoint  for obj in psutil.disk_partitions() ]
+    disk_total = sum([ psutil.disk_usage(device).total / 1024 / 1024 / 1024  for device in deviceinfo ])
+    return {"disk" : disk_total}
 
 def get_os_version():
     pass
 
 def get_time():
     return int(time.time())
-
-def format(num):
-    unit = {'K' : 1, 'M' : 2 ** 10, 'G' : 2 ** 20, 'T' : 2 ** 30}  
-    for k, v in unit.items():
-        t = float(num) / v
-        if t >= 1 and t < 1024:
-            return '%s%s' % (round(t, 2), k)
-    return
 
 def execute(cmd):
     p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
@@ -108,16 +67,13 @@ def send(data):
 def run():
     data = {}
     data['hostname'] = get_hostname()
-
     data.update(get_mem_info())
     data.update(get_cpu_info())
     data.update(get_device_info())
     data.update(get_disk_info())
-    data.update(get_manufacturer())
-    data.update(get_rel_data())
     print json.dumps(data, indent=4)
     
-    #send(data)
+    send(data)
 
 if __name__ == '__main__':
     run()
