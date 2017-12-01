@@ -8,6 +8,7 @@ from flask import Blueprint, render_template, session, redirect, url_for, \
 
 from app.common.assets import add_asset
 from app.common.assets import get_assets 
+from app.common.assets import get_assets_count 
 from app.common.assets import assetDel 
 
 from app import app
@@ -33,7 +34,9 @@ def assets():
 
     elif request.method == 'POST':
         data = request.form.to_dict()
-        data.update({'update_time' : datetime.datetime.now()})
+ 
+        cur_time = datetime.datetime.now()
+        data.update({'update_time' : cur_time, 'create_time' : cur_time})
         app.logger.info('data:%s' % data)
 
         effect_line = add_asset(data)
@@ -57,4 +60,14 @@ def assetsDel():
         response = {'data' : None, 'message' : 'delete user sucess.', 'code' : 0}
     else:
         response = {'data' : None, 'message' : 'delete user failed.', 'code' : -1}
+    return jsonify(response)
+
+
+'''API 统计主机数量
+'''
+@mod.route('/api/v1/assets/count')
+@login_required
+def api_v1_assets_count():
+    tup = get_assets_count()
+    response = {'data' : tup[0], 'message' : None, 'code' : 0}
     return jsonify(response)

@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+{{ super() }}
+
+{% block csshref%}
+<link href="/static/css/error.min.css" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+{% block breadcrumb %}
+Dashboard
+{% endblock %}
+
+{% block content %}
+
+<body class=" page-500-full-page">
+    <div class="row">
+        <div class="col-md-12 page-500">
+            <div class=" number font-red"> 500 </div>
+            <div class=" details">
+                <h3>Oops! Something went wrong.</h3>
+                <p> We are fixing it! Please come back in a while.
+                    <br/> </p>
+                <p>
+                    <a href="index.html" class="btn red btn-outline"> Return home </a>
+                    <br> </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scriptsrc %}
+<script src="/static/js/sweetalert.js" type="text/javascript"></script>
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}

@@ -54,6 +54,7 @@ from app.views import dashboard
 from app.views import login 
 from app.views import users 
 from app.views import assets
+from app.views import error 
 
 
 
@@ -61,4 +62,6 @@ app.register_blueprint(dashboard.mod)
 app.register_blueprint(login.mod) 
 app.register_blueprint(users.mod) 
 app.register_blueprint(assets.mod) 
+app.register_blueprint(error.mod) 
+
 

@@ -7,6 +7,7 @@ from flask import Blueprint, render_template, session, redirect, url_for, \
 from app.common.auth import authentication
 from app.common.users import get_user
 from app.common.users import get_users
+from app.common.users import get_users_count 
 from app.common.users import userDel
 from app.common.users import registerUser 
 from app.common.users import get_user_from_uid 
@@ -114,4 +115,14 @@ def usersEdit():
         response = {'data' : None, 'message' : 'update user sucess.', 'code' : 0}
     else:
         response = {'data' : None, 'message' : 'not found.', 'code' : -1}
+    return jsonify(response)
+
+
+'''API 统计用户数量
+'''
+@mod.route('/api/v1/users/count')
+@login_required
+def api_v1_users_count():
+    tup = get_users_count()
+    response = {'data' : tup[0], 'message' : None, 'code' : 0}
     return jsonify(response)

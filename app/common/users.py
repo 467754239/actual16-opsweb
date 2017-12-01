@@ -89,3 +89,8 @@ def fmt_update_data(data):
     for k, v in data.items():                                                            
         values.append("%s='%s'" % (k, v))
     return ', '.join(values)
+
+
+def get_users_count():
+    sql = '''SELECT count(*) FROM users; '''
+    return select_result(sql)

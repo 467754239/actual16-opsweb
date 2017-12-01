@@ -25,3 +25,7 @@ def assetDel(pk):
     sql = '''DELETE FROM assets WHERE id = %s; ''' % int(pk)
     print sql
     return execute_sql(sql)
+
+def get_assets_count():
+    sql = '''SELECT count(*) FROM assets; '''
+    return select_result(sql)
