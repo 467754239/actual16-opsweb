@@ -1,5 +1,6 @@
 
 import time
+import random
 import socket
 
 import psutil
@@ -7,7 +8,7 @@ import requests
 
 
 def get_hostname():
-    return { 'hostname' : socket.gethostname() }
+    return { 'hostname' : "%s-%d" % (socket.gethostname(), random.randint(1, 4)) }
 
 def get_mem_info():
     meminfo = {}
@@ -36,7 +37,7 @@ def main():
 
     while True:
         autocollect()
-        time.sleep(5)
+        time.sleep(1)
  
 
 

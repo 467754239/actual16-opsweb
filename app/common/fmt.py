@@ -1,5 +1,5 @@
 
-
+import time
 
 def fmt_db_data(data):
     fields, values = [], []
@@ -21,3 +21,7 @@ def fmt_update_data(data):
         values.append("%s='%s'" % (k, v))
     return ', '.join(values)
 
+def fmt_timestamp_timestr(timestamp):
+    time_local = time.localtime(timestamp)
+    dt = time.strftime("%Y-%m-%d %H:%M:%S", time_local)
+    return dt

@@ -12,6 +12,7 @@ from app import app
 from app.models import db_insert
 from app.models import db_all_select 
 from app.common.auth import login_required 
+from app.common.fmt import fmt_timestamp_timestr
 
 
 mod = Blueprint('monitor', __name__)
@@ -25,13 +26,10 @@ mod = Blueprint('monitor', __name__)
 def monitor():
 
     if request.method == 'GET':
-
-        app.logger.info('>>> users headers: \n%s' % request.headers)
-        return render_template('monitor/monitor.html')
+        return render_template('monitor/mem.html')
 
     elif request.method == 'POST':
         data = request.form.to_dict()
-
         response = {'data' : None, 'message' : 'add user failed.', 'code' : -1}
         return jsonify(response)
 
@@ -44,13 +42,20 @@ def monitor():
 #@login_required
 def api_v1_monitor():
     if request.method == 'GET':
+
+        ctime = request.args.get('time')
+        print ctime
+
         retdata = {}
         response_data = db_all_select("mem_monitor")
         for response in response_data:
 
             hostname = response[1]
             mem_free = response[2]
-            create_time = response[3]
+            create_time = fmt_timestamp_timestr( int(response[3]) )
+
+            if ctime and ctime >= create_time:
+                continue
 
             if hostname in retdata:
                 retdata[hostname]['x'].append(mem_free)
@@ -60,8 +65,7 @@ def api_v1_monitor():
                 retdata[hostname] = {'x' : [mem_free], 'y' : [create_time]}
 
         # max_time
-        retdata['next_time'] = int(time.time())
-        response = {'data' : retdata, 'message' : None, 'code' : 0}
+        response = {'data' : retdata, 'message' : {'next_time' : int(time.time())} , 'code' : 0}
         return jsonify(response) 
     else:
         data = request.form.to_dict()
@@ -72,3 +76,10 @@ def api_v1_monitor():
             response = {'data' : None, 'message' : 'add monitor failed.', 'code' : -1}
         return jsonify(response) 
 
+
+'''
+'''
+@mod.route('/log_visualization', methods=['GET', 'POST'])
+@login_required
+def log_visualization():
+    return render_template('monitor/nginx.html')
