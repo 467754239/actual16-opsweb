@@ -224,10 +224,11 @@
 
                         <div class="form-group"><label class="col-md-2 control-label">角色<span
                                 class="required">*</span> </label>
-                            <div class="col-md-9"><select name="role" class="form-control" id="role" required>
-                                <option>admin</option>
-                                <option>common</option>
-                            </select>
+                            <div class="col-md-9">
+                                <select name="role" class="form-control" id="edit_role" required>
+                                    <option value="admin">admin</option>
+                                    <option value="common">common</option>
+                                </select>
                             </div>
                         </div>
 
@@ -330,10 +331,11 @@ $('.editbtn').click(function(){
               $('#edit_rpassword').val(userinfo['password']);
               $('#edit_position').val(userinfo['position']);
               $('#edit_phone').val(userinfo['phone']);
-              $('#edit_role').val(userinfo['role']);
-
-              //var value= userinfo['role'];
-              //$("#edit_role option[value='"+value+"']").attr("selected", "selected");  
+    
+              var role_name = userinfo['role'];
+              console.log(role_name);
+              //$("#edit_role").attr("value", role_name);
+              $("#edit_role option[value='"+role_name+"']").attr("selected", "selected");  
 
               $('#btn_editUser').click(function(){
 
@@ -360,7 +362,7 @@ $('.editbtn').click(function(){
                           });
 
                       } else {
-                          alert(data.message);
+                          sweetAlert(data.message, "出错了！","error");
                       }
                   });
               }) // 提交事件结束

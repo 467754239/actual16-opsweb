@@ -4,7 +4,7 @@ import datetime
 
 from flask import Blueprint, render_template, session, redirect, url_for, \
      request, flash, g, jsonify, abort
-
+from flask import make_response
 
 from app.common.assets import add_asset
 from app.common.assets import get_assets 
@@ -14,6 +14,7 @@ from app.common.assets import assetDel
 from app import app
 from app.common.auth import login_required 
 
+from flask.ext import excel
 
 
 mod = Blueprint('assets', __name__)
@@ -47,6 +48,12 @@ def assets():
         return jsonify(retdata)
 
 
+@mod.route('/asset/csv', methods=['GET'])
+@login_required
+def export_csv():
+    filename = "actual16-reboot"
+    data = [[1, 2], [3, 4]]
+    return excel.make_response_from_array(data, "csv", file_name=filename)
 
 @mod.route('/asset/del', methods=['GET', 'POST'])
 @login_required

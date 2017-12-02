@@ -18,8 +18,8 @@ def login_required(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
 
-        app.logger.info('>>> auth headers: \n%s' % request.headers)
-        app.logger.info('>>> auth cookies: %s' % request.cookies)
+        #app.logger.info('>>> auth headers: \n%s' % request.headers)
+        #app.logger.info('>>> auth cookies: %s' % request.cookies)
 
         if not session.get('sign', None):
             return redirect('/login')

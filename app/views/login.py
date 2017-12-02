@@ -25,11 +25,11 @@ mod = Blueprint('login', __name__)
 
 
 # https://stackoverflow.com/questions/14367991/flask-before-request-add-exception-for-specific-route
-@app.before_request
-def before_request():
-    #if 'logged_in' not in session and request.endpoint != 'login':
-    #    return redirect(url_for('login'))
-    print "--------endpoint: ", request.endpoint 
+#@app.before_request
+#def before_request():
+#    #if 'logged_in' not in session and request.endpoint != 'login':
+#    #    return redirect(url_for('login'))
+#    print "--------endpoint: ", request.endpoint 
 
 @mod.route('/login', methods=['GET', 'POST'])
 def login():

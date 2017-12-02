@@ -7,6 +7,7 @@ from flask import Flask, session, g, render_template
 from flask_script import Manager
 from flaskext.markdown import Markdown
 from flask_debugtoolbar import DebugToolbarExtension
+import flask_excel as excel
 
 
 
@@ -28,6 +29,8 @@ app.config['SECRET_KEY'] = 'oF\xd3I\x98\xe5\xb4\x1a\xfb\xc77\xe3\xcc,\xc2\xd2\x0
 Markdown(app)
 mail = Mail(app)
 manager = Manager(app)
+
+excel.init_excel(app)
 
 # Logging Handler
 handler = logging.FileHandler(app.config['LOGFILE'], encoding='UTF-8')

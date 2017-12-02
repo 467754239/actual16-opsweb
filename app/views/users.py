@@ -106,19 +106,19 @@ def usersDel():
 @mod.route('/users/edit', methods=['POST'])
 @login_required
 def usersEdit():
-    app.logger.info( request.form )
-
     data = request.form.to_dict()
+    app.logger.info( "data:%s" % data )
 
     data.pop('rpassword', None)
     uid = data.pop('uid', None)
+    app.logger.info( "fmt data:%s" % data )
 
     app.logger.info( "Update user, data:%s." % data )
     effect_record = updateUserinfo(data, uid) 
     if effect_record == 1:
         response = {'data' : None, 'message' : 'update user sucess.', 'code' : 0}
     else:
-        response = {'data' : None, 'message' : 'not found.', 'code' : -1}
+        response = {'data' : None, 'message' : 'Username:%s modify failed.' % data['cn_name'], 'code' : -1}
     return jsonify(response)
 
 
