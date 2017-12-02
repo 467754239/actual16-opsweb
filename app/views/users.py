@@ -127,6 +127,9 @@ def usersEdit():
 @mod.route('/api/v1/users/count')
 @login_required
 def api_v1_users_count():
+    print dir(request)
+    print dir(request.headers)
+    print request.headers.get("token")
     tup = get_users_count()
     response = {'data' : tup[0], 'message' : None, 'code' : 0}
     return jsonify(response)

@@ -1,283 +1,199 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <title>Reboot Actual 16</title>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta content="width=device-width, initial-scale=1" name="viewport" />
-        <meta content="Preview page of Metronic Admin Theme #1 for blank page layout" name="description" />
-        <meta content="" name="author" />
-		
-        <link href="/static/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-        <link href="/static/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
-        <link href="/static/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <link href="/static/layouts/layout/css/layout.min.css" rel="stylesheet" type="text/css" />
-        <link href="/static/layouts/layout/css/themes/darkblue.min.css" rel="stylesheet" type="text/css" id="style_color" />
-        <link href="/static/css/components.min.css" rel="stylesheet" id="style_components" type="text/css" />
-	<link href="/static/imgs/favicon.ico" rel="shortcut icon" /> 
+{% extends "layout.html" %}
 
-        <style>
-            @media (min-width: 768px){
-                .navbar-nav>li>a {
-                    padding-top: 10px;
-                    padding-bottom: 11px;
+{{ super() }}
+
+{% block csshref%}
+{% endblock %}
+
+{% block breadcrumb %}
+Monitor
+{% endblock %}
+
+{% block content %}
+
+<div class='row'>
+    <div class='col-md-6'>
+        <div id="main" style="width: 600px;height:400px;"></div>
+    </div>
+    
+    <div class='col-md-6'>
+        <div id="main3" style="width: 600px;height:400px;"></div>
+    </div>
+
+    <div class='col-md-10 col-md-offset-2'>
+        <div id="main2" style="width: 1000px;height:400px;"></div>
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block scriptsrc %}
+<script src="/static/js/sweetalert.js" type="text/javascript"></script>
+<script src="/static/js/echarts.min.js" type="text/javascript"></script>
+{% endblock %}
+
+{% block script %}
+
+function echarts_func(selector, option) {
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById(selector));
+    
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+}
+
+
+// 指定图表的配置项和数据
+var option_main = {
+    title: {
+        text: 'ECharts 入门示例'
+    },
+    tooltip: {},
+    legend: {
+        data:['销量']
+    },
+    xAxis: {
+        data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+    },
+    yAxis: {},
+    series: [{
+        name: '销量',
+        type: 'bar',
+        data: [5, 20, 36, 10, 10, 20]
+    }]
+};
+// 执行函数
+echarts_func('main', option_main)
+
+
+function mem_monitor_info(text, subtext, metric, fields, values) {
+
+    var option = {
+        title: {
+            text: text,
+            subtext: subtext
+        },
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend: {
+            data:metric
+            //data:['最高气温','最低气温']
+        },
+        toolbox: {
+            show: true,
+            feature: {
+                dataZoom: {
+                    yAxisIndex: 'none'
+                },
+                dataView: {readOnly: false},
+                magicType: {type: ['line', 'bar']},
+                restore: {},
+                saveAsImage: {}
+            }
+        },
+        xAxis:  {
+            type: 'category',
+            boundaryGap: false,
+            data: fields 
+        },
+        yAxis: {
+            type: 'value',
+            axisLabel: {
+                formatter: '{value}'
+            }
+        },
+        series: [
+            {
+                name:metric[0],  // 变量
+                type:'line',
+                data:values,     // 变量
+                markPoint: {
+                    data: [
+                        {type: 'max', name: '最大值'},
+                        {type: 'min', name: '最小值'}
+                    ]
+                },
+                markLine: {
+                    data: [
+                        {type: 'average', name: '平均值'}
+                    ]
+                }
+            },
+        ]
+    };
+    return option;
+
+}
+
+
+function push_mem_monitor() {
+    $.get("/api/v1/monitor", function(data) {
+        if ( data.code == 0 ) {
+            $.each(data.data, function(hostname, dic) { 
+                var hostname = hostname.toString()
+                // func
+                var option = mem_monitor_info(hostname, '', ['mem_free'], dic.y, dic.x)
+                //var option = mem_monitor_info(hostname', '123', ['mem_free'], dic.x, dic.y);
+
+                // func
+                echarts_func('main2', option);
+            });
+        } else {
+            alert('error');
+        };
+    });
+
+};
+
+// 执行函数
+push_mem_monitor()
+setInterval(function() {
+    push_mem_monitor()
+}, 5000);
+
+
+var option_main3 = {
+    title : {
+        text: '某站点用户访问来源',
+        subtext: '纯属虚构',
+        x:'center'
+    },
+    tooltip : {
+        trigger: 'item',
+        formatter: "{a} <br/>{b} : {c} ({d}%)"
+    },
+    legend: {
+        orient: 'vertical',
+        left: 'left',
+        data: ['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+    },
+    series : [
+        {
+            name: '访问来源',
+            type: 'pie',
+            radius : '55%',
+            center: ['50%', '60%'],
+            data:[
+                {value:335, name:'直接访问'},
+                {value:310, name:'邮件营销'},
+                {value:234, name:'联盟广告'},
+                {value:135, name:'视频广告'},
+                {value:1548, name:'搜索引擎'}
+            ],
+            itemStyle: {
+                emphasis: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
                 }
             }
-        </style>
-	</head>
+        }
+    ]
+};
 
-    <body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white">
-        <div class="page-wrapper">
-            <div class="page-header navbar navbar-fixed-top">
-                <div class="page-header-inner ">
-                    <div class="page-logo">
-                        <a href="/">
-                            <img src="/static/layouts/layout/img/logo.png" alt="logo" class="logo-default" /> </a>
-                        <div class="menu-toggler sidebar-toggler">
-                            <span></span>
-                        </div>
-                    </div>
-                    <a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span></span>
-                    </a>
-                        <ul class="nav navbar-nav pull-right">
-                            <li class="dropdown dropdown-user">
-                                <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-                                    <img alt="" class="img-circle" src="/static/layouts/layout/img/avatar3_small.jpg" />
-                                    <span class="username username-hide-on-mobile"> actual6 </span>
-                                    <i class="fa fa-angle-down"></i>
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-default">
-                                    <li>
-                                        <a href="/logout"><i class="icon-key"></i> 退出 </a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+// 执行函数
+echarts_func('main3', option_main3)
 
-            <div class="clearfix"> </div>
-
-            <div class="page-container">
-                <div class="page-sidebar-wrapper">
-                    <div class="page-sidebar navbar-collapse collapse">
-                        <ul class="page-sidebar-menu  page-header-fixed " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200" style="padding-top: 20px">
-                            <li class="sidebar-toggler-wrapper hide">
-                                <div class="sidebar-toggler">
-                                    <span></span>
-                                </div>
-                            </li>
-                            <li class="nav-item  ">
-                                <a href="javascript:;" class="nav-link nav-toggle">
-                                    <i class="icon-diamond"></i>
-                                    <span class="title">用户管理</span>
-                                    <span class="arrow"></span>
-                                </a>
-                                <ul class="sub-menu">
-                                    <li class="nav-item  ">
-                                        <a href="/users" class="nav-link ">
-                                            <span class="title">用户列表</span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item  ">
-                                        <a href="ui_colors.html" class="nav-link ">
-                                            <span class="title">用户组</span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item  ">
-                                        <a href="ui_bootbox.html" class="nav-link ">
-                                            <span class="title">用户权限</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="nav-item  ">
-                                <a href="javascript:;" class="nav-link nav-toggle">
-                                    <i class="icon-puzzle"></i>
-                                    <span class="title">资源管理</span>
-                                    <span class="arrow"></span>
-                                </a>
-                                <ul class="sub-menu">
-                                    <li class="nav-item  ">
-                                        <a href="/assets" class="nav-link ">
-                                            <span class="title">资产管理</span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item  ">
-                                        <a href="components_color_pickers.html" class="nav-link ">
-                                            <span class="title">域名管理</span>
-                                            <span class="badge badge-danger">2</span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item  ">
-                                        <a href="components_bootstrap_switch.html" class="nav-link ">
-                                            <span class="title">控制系统</span>
-                                            <span class="badge badge-success">6</span>
-                                        </a>
-                                    </li>
-                    
-                                </ul>
-                            </li>
-                            <li class="nav-item  ">
-                                <a href="javascript:;" class="nav-link nav-toggle">
-                                    <i class="icon-settings"></i>
-                                    <span class="title">性能监控</span>
-                                    <span class="arrow"></span>
-                                </a>
-                                <ul class="sub-menu">
-                                    <li class="nav-item  ">
-                                        <a href="form_controls.html" class="nav-link ">
-                                            <span class="title">主机监控
-                                        </a>
-                                    </li>            
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="page-content-wrapper">
-                    <div class="page-content">
-					
-                        <div class="page-bar">
-                            <ul class="page-breadcrumb">
-                                <li>
-                                    <a href="/">Home</a>
-                                    <i class="fa fa-angle-right"></i>
-                                </li>
-                                <li>
-                                    <span>监控管理</span>
-                                </li>
-                            </ul>
-                        </div>
-                        
-						 <div class="row">
-							<div class="col-md-12">
-								<div class="portlet light">
-									<div class="portlet-body">
-										<div class="portlet">
-											<div class="portlet-body">
-												<div class="table-scrollable">
-													<div id="main" style="height:400px;"></div>
-												</div>
-											</div>
-								        </div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-                </div>
-            </div>
-
-            <div class="page-footer">
-                <div class="page-footer-inner"> 2017 &copy; monkey. All rights reserved.</div>
-                <div class="scroll-to-top">
-                    <i class="icon-arrow-up"></i>
-                </div>
-            </div>
-        </div>
-      
-        <!-- BEGIN CORE PLUGINS -->
-        <script src="/static/global/plugins/jquery.min.js" type="text/javascript"></script>
-        <script src="/static/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-        <script src="/static/global/plugins/js.cookie.min.js" type="text/javascript"></script>
-        <script src="/static/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-        <script src="/static/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
-        <script src="/static/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
-        <script src="/static/global/scripts/app.min.js" type="text/javascript"></script>
-        <script src="/static/layouts/layout/scripts/layout.min.js" type="text/javascript"></script>
-        <script src="/static/layouts/layout/scripts/demo.min.js" type="text/javascript"></script>
-        <script src="/static/layouts/global/scripts/quick-sidebar.min.js" type="text/javascript"></script>
-        <script src="/static/layouts/global/scripts/quick-nav.min.js" type="text/javascript"></script>
-        <script src="/static/js/echarts-all.js" type="text/javascript"></script>
-        <!-- END THEME LAYOUT SCRIPTS -->
-        <script>
-            $(document).ready(function()
-            {
-                $('#clickmewow').click(function()
-                {
-                    $('#radio1003').attr('checked', 'checked');
-                });
-            })
-
-            var myChart = echarts.init(document.getElementById('main'));
-            var option = {
-                title : {
-                    text: '主机性能监控',
-                    subtext: ''
-                },
-                tooltip : {
-                    trigger: 'axis'
-                },
-                legend: {
-                    data:['load1','load5']
-                },
-                toolbox: {
-                    show : true,
-                    feature : {
-                        mark : {show: true},
-                        dataView : {show: true, readOnly: false},
-                        magicType : {show: true, type: ['line', 'bar']},
-                        restore : {show: true},
-                        saveAsImage : {show: true}
-                    }
-                },
-                calculable : true,
-                xAxis : [
-                    {
-                        type : 'category',
-                        boundaryGap : false,
-                        data : ['2017-11-02 14:00:00','2017-11-02 14:05:00','2017-11-02 14:10:00','2017-11-02 14:15:00','2017-11-02 14:20:00','2017-11-02 14:25:00','2017-11-02 14:30:00']
-                    }
-                ],
-                yAxis : [
-                    {
-                        type : 'value',
-                        axisLabel : {
-                            formatter: '{value} °C'
-                        }
-                    }
-                ],
-                series : [
-                    {
-                        name:'load1',
-                        type:'line',
-                        data:[11, 11, 15, 13, 12, 13, 10],
-                        markPoint : {
-                            data : [
-                                {type : 'max', name: '最大值'},
-                                {type : 'min', name: '最小值'}
-                            ]
-                        },
-                        markLine : {
-                            data : [
-                                {type : 'average', name: '平均值'}
-                            ]
-                        }
-                    },
-                    {
-                        name:'load5',
-                        type:'line',
-                        data:[1, -2, 2, 5, 3, 2, 0],
-                        markPoint : {
-                            data : [
-                                {name : '周最低', value : -2, xAxis: 1, yAxis: -1.5}
-                            ]
-                        },
-                        markLine : {
-                            data : [
-                                {type : 'average', name : '平均值'}
-                            ]
-                        }
-                    }
-                ]
-            };
-            myChart.setOption(option);
-
-
-        </script>
-    </body>
-
-</html>
+{% endblock %}
