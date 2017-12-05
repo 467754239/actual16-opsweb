@@ -18,7 +18,7 @@ from app import app
 from app.common.auth import login_required 
 
 
-mod = Blueprint('users', __name__)
+mod = Blueprint('users', __name__, url_prefix='/users')
 
 
 
@@ -26,7 +26,7 @@ mod = Blueprint('users', __name__)
     1. GET  查看用户信息
     2. POST 增加用户
 '''
-@mod.route('/users', methods=['GET', 'POST'])
+@mod.route('/', methods=['GET', 'POST'])
 @login_required
 def users():
 
@@ -65,7 +65,7 @@ def users():
 
 '''获取指定用户 或者 所有用户信息
 '''
-@mod.route('/users/info', methods=['GET'])
+@mod.route('/info', methods=['GET'])
 @login_required
 def users_info():
     app.logger.info(request.args)
@@ -87,7 +87,7 @@ def users_info():
 
 '''删除用户
 '''
-@mod.route('/users/del', methods=['GET'])
+@mod.route('/del', methods=['GET'])
 @login_required
 def usersDel():
     app.logger.info( request.args  )
@@ -103,7 +103,7 @@ def usersDel():
 
 '''修改用户
 '''
-@mod.route('/users/edit', methods=['POST'])
+@mod.route('/edit', methods=['POST'])
 @login_required
 def usersEdit():
     data = request.form.to_dict()
@@ -122,14 +122,3 @@ def usersEdit():
     return jsonify(response)
 
 
-'''API 统计用户数量
-'''
-@mod.route('/api/v1/users/count')
-@login_required
-def api_v1_users_count():
-    print dir(request)
-    print dir(request.headers)
-    print request.headers.get("token")
-    tup = get_users_count()
-    response = {'data' : tup[0], 'message' : None, 'code' : 0}
-    return jsonify(response)

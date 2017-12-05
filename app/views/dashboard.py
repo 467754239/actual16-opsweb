@@ -5,7 +5,7 @@ from flask import Blueprint, render_template, session, redirect, url_for, \
 
 from app.common.auth import login_required
 
-mod = Blueprint('dashboard', __name__)
+mod = Blueprint('dashboard', __name__, url_prefix='/')
 
 
 @mod.route('/')

@@ -16,8 +16,12 @@ from app.common.auth import login_required
 
 from flask.ext import excel
 
+import sys
+reload(sys)
+sys.setdefaultencoding("utf-8")
 
-mod = Blueprint('assets', __name__)
+
+mod = Blueprint('assets', __name__, url_prefix='/assets')
 
 
 
@@ -25,7 +29,7 @@ mod = Blueprint('assets', __name__)
     1. GET  查看用户信息
     2. POST 增加用户
 '''
-@mod.route('/assets', methods=['GET', 'POST'])
+@mod.route('/', methods=['GET', 'POST'])
 #@login_required
 def assets():
 
@@ -48,14 +52,15 @@ def assets():
         return jsonify(retdata)
 
 
-@mod.route('/asset/csv', methods=['GET'])
+@mod.route('/csv', methods=['GET'])
 @login_required
 def export_csv():
     filename = "actual16-reboot"
     data = [[1, 2], [3, 4]]
     return excel.make_response_from_array(data, "csv", file_name=filename)
 
-@mod.route('/asset/del', methods=['GET', 'POST'])
+
+@mod.route('/del', methods=['GET'])
 @login_required
 def assetsDel():
     app.logger.info( request.args  )
@@ -70,11 +75,3 @@ def assetsDel():
     return jsonify(response)
 
 
-'''API 统计主机数量
-'''
-@mod.route('/api/v1/assets/count')
-@login_required
-def api_v1_assets_count():
-    tup = get_assets_count()
-    response = {'data' : tup[0], 'message' : None, 'code' : 0}
-    return jsonify(response)

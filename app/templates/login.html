@@ -7,20 +7,17 @@
     <meta content="" name="description"/>
     <meta content="jenny" name="author"/>
     <link rel="stylesheet" href="/static/css/main.css">
-
-
 </head>
+
+
 <body class=" login">
-<!-- BEGIN LOGO -->
-<div class="logo">
-    <a href="index.html">
-        <img src="" alt="">
-    </a>
-</div>
-<!-- END LOGO -->
-<!-- BEGIN LOGIN -->
+    <div class="logo">
+        <a href="#">
+            <img src="" alt="">
+        </a>
+    </div>
+
 <div class="content">
-    <!-- BEGIN LOGIN FORM -->
     <form class="login-form" action="/login" method="post">
         <h3 class="form-title font-green">Sign In</h3>
         <div class="alert alert-danger display-hide">
@@ -35,7 +32,7 @@
             <label class="control-label visible-ie8 visible-ie9">Password</label>
             <input class="form-control form-control-solid placeholder-no-fix" type="password" autocomplete="off" placeholder="Password" name="password" /> </div>
         <div class="form-group">
-             <label style="color:red">{{ errmsg }}</label>
+             {% if errmsg %} <label style="color:red">{{ errmsg }}</label>{% endif %}
         </div>
         <div class="form-actions">
             <button type="submit" class="btn green uppercase">Login</button>
@@ -52,9 +49,8 @@
             </p>
         </div>
     </form>
-    <!-- END LOGIN FORM -->
-    <!-- BEGIN FORGOT PASSWORD FORM -->
-    <form class="forget-form" action="index.html" method="post">
+
+    <form class="forget-form" action="#" method="post">
         <h3 class="font-green">Forget Password ?</h3>
         <p> Enter your e-mail address below to reset your password. </p>
         <div class="form-group">
