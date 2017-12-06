@@ -62,6 +62,7 @@ from app.views import users
 from app.views import assets
 from app.views import monitor 
 from app.views import error 
+from app.views import control
 from app.views import api 
 
 
@@ -72,4 +73,5 @@ app.register_blueprint(users.mod)
 app.register_blueprint(assets.mod) 
 app.register_blueprint(monitor.mod) 
 app.register_blueprint(error.mod) 
+app.register_blueprint(control.mod) 
 app.register_blueprint(api.mod) 

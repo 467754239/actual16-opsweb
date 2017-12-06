@@ -34,26 +34,24 @@ mod = Blueprint('login', __name__)
 @mod.route('/login', methods=['GET', 'POST'])
 def login():
 
-    #msg = Message("Hello", sender="13260071987@163.com", recipients=["467754239@qq.com"])
-    #mail.send(msg)
-
     if request.method == 'POST':
+
         username = request.form['username']
         password = request.form['password']
-        loginInfo, ok = authentication(username, password)
+
+        loginInfo, dbok = authentication(username, password)
         github_loginInfo, github_ok = github_auth(username, password)
-        app.logger.info('login info:%s, ok:%s' % (loginInfo, ok))
-        if ok or github_ok:
+        app.logger.info('login info:%s, ok:%s' % (loginInfo, dbok))
+
+        if dbok or github_ok:
             role = get_role_from_username(username)
             if role:
                 session['sign'] = { 'username' : username, 'role' : role[0] }
             else:
                 session['sign'] = { 'username' : username, 'role' : None }
-            #session['expires'] = datetime.datetime.utcnow() + datetime.timedelta(minutes=1)
-            #session.permanent = True
-            return redirect("/")
+            return jsonify({"code" : 0, 'errmsg' : None})
         else:
-            return render_template('login.html', errmsg=loginInfo)
+            return jsonify({"code" : -1, 'message' : loginInfo})
     else:
         return render_template('login.html')
 
