@@ -4,12 +4,118 @@
 {% endblock %}
 
 {% block breadcrumb %}
-control
+控制系统
 {% endblock %}
 
 {% block content %}
 
-control
+<div class="row">
+
+    <div class="col-md-6">
+
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption font-red-sunglo">
+                    <i class="icon-settings font-red-sunglo"></i>
+                    <span class="caption-subject bold uppercase"> 命令执行</span>
+                </div>
+            </div>
+
+            <div class="portlet-body form">
+                <form role="form">
+                    <div class="form-body">
+                        <div class="form-group">
+                            <label>主机</label>
+                            <select class="form-control">
+                                <option>Option 1</option>
+                                <option>Option 2</option>
+                                <option>Option 3</option>
+                                <option>Option 4</option>
+                                <option>Option 5</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>主机组</label>
+                            <select multiple="" class="form-control">
+                                <option>Option 1</option>
+                                <option>Option 2</option>
+                                <option>Option 3</option>
+                                <option>Option 4</option>
+                                <option>Option 5</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>命令</label>
+                            <textarea class="form-control" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn blue">Submit</button>
+                        <button type="button" class="btn default">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-md-6">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="icon-settings font-dark"></i>
+                    <span class="caption-subject font-dark sbold uppercase">文件上传</span>
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <form class="form-horizontal" role="form">
+                    <div class="form-body">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">主机</label>
+                            <div class="col-md-9">
+                                <select class="form-control">
+                                    <option>Option 1</option>
+                                    <option>Option 2</option>
+                                    <option>Option 3</option>
+                                    <option>Option 4</option>
+                                    <option>Option 5</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">主机组</label>
+                            <div class="col-md-9">
+                                <select multiple="" class="form-control">
+                                    <option>Option 1</option>
+                                    <option>Option 2</option>
+                                    <option>Option 3</option>
+                                    <option>Option 4</option>
+                                    <option>Option 5</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputFile" class="col-md-3 control-label">文件上传</label>
+                            <div class="col-md-9">
+                                <input type="file" id="exampleInputFile">
+                                <p class="help-block"> Please upload local file to remote.. </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <div class="row">
+                            <div class="col-md-offset-3 col-md-9">
+                                <button type="submit" class="btn green">Submit</button>
+                                <button type="button" class="btn default">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+		</div>
+    </div>
+
+</div>
 
 {% endblock %}
 

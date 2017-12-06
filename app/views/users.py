@@ -122,3 +122,9 @@ def usersEdit():
     return jsonify(response)
 
 
+'''
+'''
+@mod.route('/group', methods=['GET'])
+@login_required
+def usersGroup():
+    return render_template("users/usergroup.html")

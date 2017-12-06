@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <head lang="en">
     <meta charset="utf-8"/>
-    <title>Actual16登录</title>
+    <title>Login</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1" name="viewport"/>
     <meta content="" name="description"/>
@@ -47,18 +47,14 @@
     <script>
         $("#loginForm").on("submit", function() {
             var data = $("#loginForm").serialize();
-            console.log(data);
             $.post('/login', data, function(data) {
-                console.log(data);
                 if ( data.code == 0 ) {
-                    swal("干得漂亮！", "你点击了按钮！","success")
+                    location.href = "/"
                 } else {
-                    swal("干得漂亮！", "你点击了按钮！","success")
+                    swal("登录失败", data.message, "error")
                 }
-                return false;
             });
-            return false
-            
+            return false;
         });
     </script>
 
