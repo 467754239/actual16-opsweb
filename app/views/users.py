@@ -32,8 +32,8 @@ def users():
 
     if request.method == 'GET':
 
-        app.logger.info('>>> users headers: \n%s' % request.headers)
-        app.logger.info('>>> users  cookies: %s' % request.cookies)
+        #app.logger.info('>>> users headers: \n%s' % request.headers)
+        #app.logger.info('>>> users  cookies: %s' % request.cookies)
 
         users = get_users()
         return render_template('users/users.html', users=users)
@@ -48,7 +48,7 @@ def users():
         # 验证用户是否存在
         username = data.get('username')
         valid_info, valid_status = validate_user_exists( username )
-        print valid_info, valid_status
+        app.logger.debug("valid_info:%s, valid_status:%s." % (valid_info, valid_status))
         if valid_status:
             response = {'data' : None, 'message' : valid_info, 'code' : -1}
             return jsonify(response)

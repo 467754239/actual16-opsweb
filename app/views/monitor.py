@@ -44,7 +44,6 @@ def api_v1_monitor():
     if request.method == 'GET':
 
         ctime = request.args.get('time')
-        print ctime
 
         retdata = {}
         response_data = db_all_select("mem_monitor")
