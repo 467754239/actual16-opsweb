@@ -8,9 +8,6 @@
 - [x] echarts 
 
 
-# actual16-opsweb
-actual 16
-
 
 ## 快速生成.gitignore文件
 
