@@ -22,8 +22,8 @@ MAIL_SERVER   = 'smtp.163.com'
 MAIL_PORT     = 25
 MAIL_USE_TLS  = True
 #MAIL_USE_SSL  = True
-MAIL_USERNAME = os.environ.get('MAIL_USERNAME', '13260071987@163.com')
-MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD', 'yi15093547036')
+MAIL_USERNAME = os.environ.get('MAIL_USERNAME', 'xxxxxx@163.com')
+MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD', 'xxxxxx')
 
 # UPLOAD
 UPLOAD_FOLDER = '/tmp/uploads'

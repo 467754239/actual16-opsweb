@@ -29,5 +29,4 @@ def execute_upload_for_passwd(host, username, password, localFile, remoteFile, p
 
 
 if __name__ == '__main__':
-    execute_command_for_password('112.74.164.107', 'wangkang', '123456', 'df -h', port=22)
-    execute_upload_for_passwd('112.74.164.107', 'wangkang', '123456', '/tmp/uploads/aws_ec2_.xlsx', '/tmp/', port=22)
+    pass
