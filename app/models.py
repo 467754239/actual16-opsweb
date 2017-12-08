@@ -1,5 +1,5 @@
 
-from . import app
+from app import app
 
 from app.common.fmt import fmt_db_data 
 

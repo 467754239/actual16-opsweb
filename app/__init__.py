@@ -9,10 +9,11 @@ from flaskext.markdown import Markdown
 from flask_debugtoolbar import DebugToolbarExtension
 import flask_excel as excel
 
-
+from app.common.tokeybase import Token
 
 app = Flask(__name__)
 app.config.from_object('config')
+app.url_map.strict_slashes = False
 
 # the toolbar is only enabled in debug mode:
 app.debug = True
@@ -25,6 +26,8 @@ app.config['SECRET_KEY'] = 'oF\xd3I\x98\xe5\xb4\x1a\xfb\xc77\xe3\xcc,\xc2\xd2\x0
 
 #app.config['PERMANENT_SESSION_LIFETIME'] =  datetime.timedelta(minutes=1)
 
+app.config['max_token_age'] = 1800  # second
+app.config['token'] = Token(app.config['SECRET_KEY'], app.config['max_token_age'])
 
 Markdown(app)
 mail = Mail(app)
@@ -63,7 +66,7 @@ from app.views import assets
 from app.views import monitor 
 from app.views import error 
 from app.views import control
-from app.views import api 
+from app.views.v1 import api 
 
 
 

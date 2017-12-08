@@ -24,6 +24,13 @@ def validate_user_exists(username):
         return None, False
     return 'username:%s already exists.' % username, True
 
+def validate_uid_exists(uid):
+    sql = '''SELECT * FROM users WHERE id = '%s';''' % uid 
+    num = select_result(sql)
+    if not num:
+        return None, False
+    return 'username:%s already exists.' % uid , True
+
 def get_users():
     fields = ['id', 'username', 'phone', 'role', 'cn_name', 'position', 'password', 'email']
     sql = '''SELECT %s FROM users; ''' % ','.join(fields)
@@ -35,6 +42,13 @@ def get_users():
 def get_user(name):
     sql = '''SELECT * FROM users WHERE username = '%s';''' % name
     return select_all_result(sql)
+
+def get_uid_from_username(username):
+    sql = '''SELECT id FROM users WHERE username = '%s';''' % username
+    uid = select_result(sql)
+    if uid:
+        return uid[0], True
+    return None, False
 
 def get_user_from_uid(uid):
     fields = ['id', 'username', 'phone', 'role', 'cn_name', 'position', 'password', 'email']

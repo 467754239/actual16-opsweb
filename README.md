@@ -28,3 +28,19 @@ https://pythonhosted.org/Flask-Mail/
 
 https://github.com/eugene-eeo/mailthon
 ```
+
+
+## flask upload file
+```
+http://flask.pocoo.org/docs/0.10/patterns/fileuploads/
+```
+
+
+
+```
+## return false
+http://www.jb51.net/article/40564.htm
+
+## ajax upload file
+http://yunzhu.iteye.com/blog/2177923
+```
