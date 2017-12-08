@@ -39,7 +39,7 @@ def verify_token(func):
 
         token_info, ok = app.config['token'].verify_token(token)
         if not ok:
-			return jsonify({ 'token' : token_info })
+            return jsonify({ 'token' : token_info })
         
         uid = token_info['token']
         _, uid_ok = validate_uid_exists(uid)
@@ -56,8 +56,6 @@ def authentication(username, password):
     if not tuple_password:
         return 'Username: %s not register.' % username, False
 
-    print tuple_password
-    print encryption(password)
     if encryption(password) != tuple_password[0]:
         return 'Username: %s, bad password.' % username, False 
 
