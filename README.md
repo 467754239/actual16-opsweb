@@ -1,3 +1,12 @@
+# OpsWeb Platform
+
+- [x] flask
+- [x] mysql
+- [x] redis
+- [x] bootstrap
+- [x] paramiko
+
+
 # actual16-opsweb
 actual 16
 
