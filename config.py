@@ -28,3 +28,10 @@ MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD', 'yi15093547036')
 # UPLOAD
 UPLOAD_FOLDER = '/tmp/uploads'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+
+
+# ACLHOST
+PERMISSION_POOL = (
+    '127.0.0.1',
+    '106.38.84.18',
+    )

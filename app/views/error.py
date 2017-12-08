@@ -20,3 +20,9 @@ def page_not_found(e):
 @app.errorhandler(500)
 def page_not_found(e):
     return render_template('error/page_system_500.html'), 500 
+
+''' 403 
+'''
+@app.errorhandler(403)
+def page_not_found(e):
+    return render_template('error/page_system_403.html'), 403
