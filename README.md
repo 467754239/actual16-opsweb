@@ -5,6 +5,7 @@
 - [x] redis
 - [x] bootstrap
 - [x] paramiko
+- [x] echarts 
 
 
 # actual16-opsweb
