@@ -11,7 +11,7 @@
         <link href="/static/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
         <link href="/static/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="/static/layouts/layout/css/layout.min.css" rel="stylesheet" type="text/css" />
-        <link href="/static/layouts/layout/css/themes/darkblue.min.css" rel="stylesheet" type="text/css" id="style_color" />
+        <link href="/static/layouts/layout/css/themes/darkblue.css" rel="stylesheet" type="text/css" id="style_color" />
         <link href="/static/css/components.min.css" rel="stylesheet" id="style_components" type="text/css" />
         <link href="/static/css/main_define.css" rel="stylesheet" id="style_components" type="text/css" />
         <link href="/static/imgs/favicon.ico" rel="shortcut icon" /> 
@@ -196,14 +196,14 @@
         {% endblock %}
 
         <script>
-            // 菜单点击折叠
-            // var path = location.pathname
-            // var path = path.replace(/\/$/i, '');
-            // console.log(path);
-			// var elemnt = $('[href="'+path+'"]');			
-			// $('#menuPage').find('.nav-item').removeClass('active');
-			// elemnt.parent('li').addClass('active');            
-			// elemnt.parents('.nav-item').addClass('active open')
+             // 菜单点击折叠
+             var path = location.pathname
+             var path = path.replace(/\/$/i, '');
+             console.log(path);
+			 var elemnt = $('[href="'+path+'"]');			
+			 $('#menuPage').find('.nav-item').removeClass('active');
+			 elemnt.parent('li').addClass('active');            
+			 elemnt.parents('.nav-item').addClass('active open')
 
             {% block script %}
             {% endblock %}

@@ -31,7 +31,7 @@ app.config['token'] = Token(app.config['SECRET_KEY'], app.config['max_token_age'
 
 Markdown(app)
 mail = Mail(app)
-manager = Manager(app)
+#manager = Manager(app)
 
 excel.init_excel(app)
 

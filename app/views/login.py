@@ -43,7 +43,11 @@ def after_request(response):
     #print request.host_url
     #print request.headers
     url = request.url
-    username = session['sign']['username']
+    print session
+    if session.has_key("sign"):
+        username = session['sign']['username']
+    else:
+        username = None
     app.logger.debug("After_request, url:%s, username:%s." % (url, username))
     return response
 
