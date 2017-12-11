@@ -20,6 +20,7 @@ from app.common.auth import login_required
 from app.common.assets import add_asset
 from app.common.assets import get_assets 
 from app.common.assets import get_assets_count 
+from app.common.assets import validate_hostname_unique 
 from app.common.assets import assetDel 
 
 
@@ -52,6 +53,17 @@ def assets():
         data.update({'update_time' : cur_time, 'create_time' : cur_time})
         app.logger.info('data:%s' % data)
 
+        hostname = data['hostname']
+        app.logger.debug("hostname:%s." % hostname)
+        try:
+            err = validate_hostname_unique(str(hostname))
+            app.logger.debug("err:%s" % err)
+            if err == 1:
+                retdata = {'code' : -1, 'data' : None, 'message' : 'hostname:%s already exists.' % hostname}
+                return jsonify(retdata)
+        except Exception as e:
+             app.logger.error(e.args)
+
         effect_line = add_asset(data)
         if effect_line == 1:
             retdata = {'code' : 0, 'data' : None, 'message' : 'add asset sucess.'}
@@ -64,7 +76,7 @@ def assets():
 @login_required
 def export_csv():
     filename = "actual16-reboot"
-    data = [[1, 2], [3, 4]]
+    data = [['cpu', 'mem', 'hostname'], ['4', '8', 'monkey-hostname']]
     return excel.make_response_from_array(data, "csv", file_name=filename)
 
 

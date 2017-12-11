@@ -30,7 +30,7 @@ def api_v1_users_count():
 
 
 @mod.route('/assets/count')
-@login_required
+#@login_required
 def api_v1_assets_count():
     tup = get_assets_count()
     response = {'data' : tup[0], 'message' : None, 'code' : 0}
@@ -54,4 +54,14 @@ def get_token():
 @mod.route('/hello')
 @verify_token
 def hello():
+    return 'token sucess.' 
+
+
+@mod.route('/assets', methods=['POST'])
+@verify_token
+def auto_collect_assets():
+    '''
+        1. parse json data
+        2. add data to assets
+    '''
     return 'token sucess.' 

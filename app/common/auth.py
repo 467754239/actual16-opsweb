@@ -33,7 +33,8 @@ def verify_token(func):
 
     @wraps(func)
     def decorated(*args, **kwargs):
-        token = request.args.get('token', None)
+        #token = request.args.get('token', None)
+        token = request.form.get('token', None)
         if not token:
             return jsonify({ 'token' : 'token is required.' })
 

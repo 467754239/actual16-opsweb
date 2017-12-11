@@ -31,7 +31,7 @@ app.config['token'] = Token(app.config['SECRET_KEY'], app.config['max_token_age'
 
 Markdown(app)
 mail = Mail(app)
-#manager = Manager(app)
+manager = Manager(app)
 
 excel.init_excel(app)
 
@@ -54,6 +54,7 @@ conn = mdb.connect(
 
 cursor = conn.cursor()
 conn.autocommit(1)
+app.config['conn'] = conn
 app.config['cursor'] = cursor
 
 

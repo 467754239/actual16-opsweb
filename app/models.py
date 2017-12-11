@@ -28,3 +28,9 @@ def db_insert(table_name, data):
 def db_all_select(table_name):
     sql = '''SELECT * FROM %s;''' % table_name
     return select_all_result(sql)
+
+
+def close_db():
+    app.config['cursor'].close()
+    app.config['conn'].close()
+    

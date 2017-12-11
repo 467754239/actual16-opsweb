@@ -30,7 +30,7 @@
             <i class="fa fa-angle-down"></i>
         </button>
         <ul class="dropdown-menu pull-right">
-            <li><a href="/asset/csv"><i class="fa fa-file-excel-o"></i> Export to Excel </a></li>
+            <li><a href="/assets/csv"><i class="fa fa-file-excel-o"></i> Export to Excel </a></li>
         </ul>
     </div>
   
@@ -219,9 +219,10 @@ $("#btn_addsave").on("click", function() {
 // 删除资产
 $(".del_asset").click(function() {
     var pk= $(this).attr('pk')
-    $.get('/asset/del', {'pk' : pk}, function(data) {
+    $.get('/assets/del', {'pk' : pk}, function(data) {
         swal("干得漂亮！", "删除记录成功！","success")
     });
+    location.reload();
 });
 
 // 修改资产

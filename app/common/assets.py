@@ -29,3 +29,7 @@ def assetDel(pk):
 def get_assets_count():
     sql = '''SELECT count(*) FROM assets; '''
     return select_result(sql)
+
+def validate_hostname_unique(hostname):
+    sql = '''SELECT * FROM assets WHERE hostname='%s'; ''' % hostname
+    return execute_sql(sql)

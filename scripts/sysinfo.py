@@ -19,7 +19,7 @@ def get_hostname():
     return socket.gethostname()
 
 
-def get_mem_info(noBufferCache=True):
+def get_mem_info():
     fd = open('/proc/meminfo', 'r')
     mem_total = fd.readline().split()[1]
     fd.close()
