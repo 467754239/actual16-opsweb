@@ -35,3 +35,7 @@ PERMISSION_POOL = (
     '127.0.0.1',
     '106.38.84.18',
     )
+
+
+# log
+NGINXLOG = "/home/zhengyscn/actual16-opsweb/logs/access.log"

@@ -54,6 +54,7 @@ conn = mdb.connect(
 
 cursor = conn.cursor()
 conn.autocommit(1)
+conn.ping(True)
 app.config['conn'] = conn
 app.config['cursor'] = cursor
 

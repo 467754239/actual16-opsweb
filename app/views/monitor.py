@@ -15,6 +15,8 @@ from app.common.auth import login_required
 from app.common.fmt import fmt_timestamp_timestr
 
 
+
+
 mod = Blueprint('monitor', __name__)
 
 
@@ -78,7 +80,13 @@ def api_v1_monitor():
 
 '''
 '''
-@mod.route('/log_visualization', methods=['GET', 'POST'])
+@mod.route('/log/pie', methods=['GET'])
 @login_required
-def log_visualization():
+def log_pie():
     return render_template('monitor/nginx.html')
+
+
+@mod.route('/log/map', methods=['GET'])
+@login_required
+def log_map():
+    return render_template('monitor/logmap.html')

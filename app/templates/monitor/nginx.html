@@ -6,14 +6,29 @@
 {% endblock %}
 
 {% block breadcrumb %}
-Log Monitor
+Log Pie 
 {% endblock %}
 
 {% block content %}
 
 <div class='row'>
-    <div class='col-md-12 '>
-        <div id="main" style="width: 1200px;height:400px;"></div>
+
+    <div class="col-md-12">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="icon-bubble font-green-sharp"></i>
+                    <span class="caption-subject font-green-sharp sbold">Notific8 Notification Demo</span>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="note note-success">
+                    <p> jquery.notific8 is a notification plug-in that was inspired by the notification style introduced in Windows 8. For more info Check out</p>
+                </div>
+        
+                <div id="main" style="width: 1200px;height:500px;"></div>
+            </div>
+        </div>
     </div>
 
 </div>
@@ -23,6 +38,7 @@ Log Monitor
 {% block scriptsrc %}
 <script src="/static/js/sweetalert.js" type="text/javascript"></script>
 <script src="/static/js/echarts.min.js" type="text/javascript"></script>
+<script src="/static/js/china.js" type="text/javascript"></script>
 {% endblock %}
 
 {% block script %}
@@ -97,46 +113,342 @@ function mem_monitor_info(text, subtext, metric, fields, values) {
 }
 
 
-var option = {
-    title : {
-        text: 'LoadBalance日志数据',
-        subtext: 'actual16-reboot',
-        x:'center'
-    },
-    tooltip : {
-        trigger: 'item',
-        formatter: "{a} <br/>{b} : {c} ({d}%)"
-    },
-    legend: {
-        orient: 'vertical',
-        left: 'left',
-        data: ['200','403','301','404','500']
-    },
-    series : [
-        {
-            name: 'actual16 loadbalance log',
-            type: 'pie',
-            radius : '55%',
-            center: ['50%', '60%'],
-            data:[
-                {value:335, name:'200'},
-                {value:310, name:'301'},
-                {value:234, name:'403'},
-                {value:135, name:'404'},
-                {value:1548, name:'500'}
-            ],
-            itemStyle: {
-                emphasis: {
-                    shadowBlur: 10,
-                    shadowOffsetX: 0,
-                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+// map
+function renderItem(params, api) {
+    var coords = [
+        [116.7,39.53],
+        [103.73,36.03],
+        [112.91,27.87],
+        [120.65,28.01],
+        [119.57,39.95]
+    ];
+    var points = [];
+    for (var i = 0; i < coords.length; i++) {
+        points.push(api.coord(coords[i]));
+    }
+    var color = api.visual('color');
+
+    return {
+        type: 'polygon',
+        shape: {
+            points: echarts.graphic.clipPointsByRect(points, {
+                x: params.coordSys.x,
+                y: params.coordSys.y,
+                width: params.coordSys.width,
+                height: params.coordSys.height
+            })
+        },
+        style: api.style({
+            fill: color,
+            stroke: echarts.color.lift(color)
+        })
+    };
+}
+
+$(document).ready(function(){ 
+
+    // 1. nginx status_code ---> pie
+    $.get('/api/v1/log/nginx/count', function(data) {
+        console.log(data);
+        var option = {
+            title : {
+                text: '日志数据',
+                subtext: 'actual16-reboot',
+                x:'center'
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+                data: data['fields'] 
+                //data: ['200','403','301','404','500']
+            },
+            series : [
+                {
+                    name: 'actual16 loadbalance log',
+                    type: 'pie',
+                    radius : '55%',
+                    center: ['50%', '60%'],
+                    data : data['data'],
+                    //data:[
+                    //    {value:335, name:'200'},
+                    //    {value:310, name:'301'},
+                    //    {value:234, name:'403'},
+                    //    {value:135, name:'404'},
+                    //    {value:1548, name:'500'}
+                    //],
+                    itemStyle: {
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+        // 执行函数
+        echarts_func('main', option)
+    });
+
+
+    // 2. nginx ip count [map]
+    $.get('/api/v1/log/nginx/map', function(retdata) {
+
+        var data = retdata['data']
+        var geoCoordMap = retdata['geo']
+        console.log(data);
+        console.log(geoCoordMap);
+
+        var convertData = function (data) {
+            var res = [];
+            for (var i = 0; i < data.length; i++) {
+                var geoCoord = geoCoordMap[data[i].name];
+                if (geoCoord) {
+                    res.push({
+                        name: data[i].name,
+                        value: geoCoord.concat(data[i].value)
+                    });
                 }
             }
-        }
-    ]
-};
+            return res;
+        };
+        
+        option = {
+            backgroundColor: '#404a59',
+            title: {
+                text: '全国主要城市空气质量',
+                subtext: 'data from PM25.in',
+                sublink: 'http://www.pm25.in',
+                left: 'center',
+                textStyle: {
+                    color: '#fff'
+                }
+            },
+            tooltip : {
+                trigger: 'item'
+            },
+            bmap: {
+                center: [104.114129, 37.550339],
+                zoom: 5,
+                roam: true,
+                mapStyle: {
+                    styleJson: [
+                            {
+                                "featureType": "water",
+                                "elementType": "all",
+                                "stylers": {
+                                    "color": "#044161"
+                                }
+                            },
+                            {
+                                "featureType": "land",
+                                "elementType": "all",
+                                "stylers": {
+                                    "color": "#004981"
+                                }
+                            },
+                            {
+                                "featureType": "boundary",
+                                "elementType": "geometry",
+                                "stylers": {
+                                    "color": "#064f85"
+                                }
+                            },
+                            {
+                                "featureType": "railway",
+                                "elementType": "all",
+                                "stylers": {
+                                    "visibility": "off"
+                                }
+                            },
+                            {
+                                "featureType": "highway",
+                                "elementType": "geometry",
+                                "stylers": {
+                                    "color": "#004981"
+                                }
+                            },
+                            {
+                                "featureType": "highway",
+                                "elementType": "geometry.fill",
+                                "stylers": {
+                                    "color": "#005b96",
+                                    "lightness": 1
+                                }
+                            },
+                            {
+                                "featureType": "highway",
+                                "elementType": "labels",
+                                "stylers": {
+                                    "visibility": "off"
+                                }
+                            },
+                            {
+                                "featureType": "arterial",
+                                "elementType": "geometry",
+                                "stylers": {
+                                    "color": "#004981"
+                                }
+                            },
+                            {
+                                "featureType": "arterial",
+                                "elementType": "geometry.fill",
+                                "stylers": {
+                                    "color": "#00508b"
+                                }
+                            },
+                            {
+                                "featureType": "poi",
+                                "elementType": "all",
+                                "stylers": {
+                                    "visibility": "off"
+                                }
+                            },
+                            {
+                                "featureType": "green",
+                                "elementType": "all",
+                                "stylers": {
+                                    "color": "#056197",
+                                    "visibility": "off"
+                                }
+                            },
+                            {
+                                "featureType": "subway",
+                                "elementType": "all",
+                                "stylers": {
+                                    "visibility": "off"
+                                }
+                            },
+                            {
+                                "featureType": "manmade",
+                                "elementType": "all",
+                                "stylers": {
+                                    "visibility": "off"
+                                }
+                            },
+                            {
+                                "featureType": "local",
+                                "elementType": "all",
+                                "stylers": {
+                                    "visibility": "off"
+                                }
+                            },
+                            {
+                                "featureType": "arterial",
+                                "elementType": "labels",
+                                "stylers": {
+                                    "visibility": "off"
+                                }
+                            },
+                            {
+                                "featureType": "boundary",
+                                "elementType": "geometry.fill",
+                                "stylers": {
+                                    "color": "#029fd4"
+                                }
+                            },
+                            {
+                                "featureType": "building",
+                                "elementType": "all",
+                                "stylers": {
+                                    "color": "#1a5787"
+                                }
+                            },
+                            {
+                                "featureType": "label",
+                                "elementType": "all",
+                                "stylers": {
+                                    "visibility": "off"
+                                }
+                            }
+                    ]
+                }
+            },
+            series : [
+                {
+                    name: 'pm2.5',
+                    type: 'scatter',
+                    coordinateSystem: 'bmap',
+                    data: convertData(data),
+                    symbolSize: function (val) {
+                        return val[2] / 10;
+                    },
+                    label: {
+                        normal: {
+                            formatter: '{b}',
+                            position: 'right',
+                            show: false
+                        },
+                        emphasis: {
+                            show: true
+                        }
+                    },
+                    itemStyle: {
+                        normal: {
+                            color: '#ddb926'
+                        }
+                    }
+                },
+                {
+                    name: 'Top 5',
+                    type: 'effectScatter',
+                    coordinateSystem: 'bmap',
+                    data: convertData(data.sort(function (a, b) {
+                        return b.value - a.value;
+                    }).slice(0, 6)),
+                    symbolSize: function (val) {
+                        return val[2] / 10;
+                    },
+                    showEffectOn: 'emphasis',
+                    rippleEffect: {
+                        brushType: 'stroke'
+                    },
+                    hoverAnimation: true,
+                    label: {
+                        normal: {
+                            formatter: '{b}',
+                            position: 'right',
+                            show: true
+                        }
+                    },
+                    itemStyle: {
+                        normal: {
+                            color: '#f4e925',
+                            shadowBlur: 10,
+                            shadowColor: '#333'
+                        }
+                    },
+                    zlevel: 1
+                },
+                {
+                    type: 'custom',
+                    coordinateSystem: 'bmap',
+                    renderItem: renderItem,
+                    itemStyle: {
+                        normal: {
+                            opacity: 0.5
+                        }
+                    },
+                    animation: false,
+                    silent: true,
+                    data: [0],
+                    z: -10
+                }
+            ]
+        };
 
-// 执行函数
-echarts_func('main', option)
+        // 执行函数
+        echarts_func('main_map', option)
+    });
+    
+
+
+
+});
+
 
 {% endblock %}

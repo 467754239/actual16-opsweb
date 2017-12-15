@@ -36,6 +36,12 @@ def before_request():
     #    return redirect(url_for('login'))
     # print "--------endpoint: ", request.endpoint 
 
+    # http://flask.pocoo.org/docs/0.12/api/#flask.session.permanent
+    # https://www.jordanbonser.com/flask-session-timeout.html
+    session.permanent = True  # False
+    app.permanent_session_lifetime = datetime.timedelta(minutes=30)	# default 31days
+    session.modified = True
+
 
 @app.after_request
 def after_request(response):
