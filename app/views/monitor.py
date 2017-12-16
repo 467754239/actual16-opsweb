@@ -83,10 +83,10 @@ def api_v1_monitor():
 @mod.route('/log/pie', methods=['GET'])
 @login_required
 def log_pie():
-    return render_template('monitor/nginx.html')
+    return render_template('monitor/nginx_log_pie.html')
 
 
 @mod.route('/log/map', methods=['GET'])
 @login_required
 def log_map():
-    return render_template('monitor/logmap.html')
+    return render_template('monitor/nginx_log_map.html')

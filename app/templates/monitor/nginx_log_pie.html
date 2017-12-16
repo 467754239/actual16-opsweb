@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block breadcrumb %}
-Memory
+Log Pie 
 {% endblock %}
 
 {% block content %}
@@ -26,8 +26,7 @@ Memory
                     <p> jquery.notific8 is a notification plug-in that was inspired by the notification style introduced in Windows 8. For more info Check out</p>
                 </div>
         
-                <div class='row' id="mainRow">
-                </div>
+                <div id="main" style="width: 1200px;height:500px;"></div>
             </div>
         </div>
     </div>
@@ -37,7 +36,6 @@ Memory
 {% endblock %}
 
 {% block scriptsrc %}
-<script src="/static/js/sweetalert.js" type="text/javascript"></script>
 <script src="/static/js/echarts.min.js" type="text/javascript"></script>
 {% endblock %}
 
@@ -64,7 +62,6 @@ function mem_monitor_info(text, subtext, metric, fields, values) {
         },
         legend: {
             data:metric
-            //data:['最高气温','最低气温']
         },
         toolbox: {
             show: true,
@@ -109,55 +106,45 @@ function mem_monitor_info(text, subtext, metric, fields, values) {
         ]
     };
     return option;
+
 }
 
 
-function gen_string(selector) {
-	var start_str = '<div class="col-md-12"> <div id=';
-	var end_str = ' style="width: 1200px;height:400px;"></div></div>';
-	var data = start_str + '"' + selector + '"' + end_str;
-	return data;
-}
+$(document).ready(function(){ 
 
-function gen_div() {
+    $.get('/api/v1/log/nginx/count', function(data) {
 
-    $.get("/api/v1/monitor", function(data) {
-        var html_string = ""
-        $.each(data.data, function(hostname, dic) { 
-             var hostname = hostname.toString()
-             var data = gen_string(hostname);
-             html_string += data
-        });
-        $("#mainRow").html(html_string);
-    });
-};
-
-function push_mem_monitor() {
-    $.get("/api/v1/monitor", {'time' : create_time}, function(data) {
-
-        create_time = data.message['next_time'];
-        if ( data.code == 0 ) {
-            $.each(data.data, function(hostname, dic) { 
-                var hostname = hostname.toString()
-                var option = mem_monitor_info(hostname, '', ['mem_free'], dic.y, dic.x)
-                echarts_func(hostname, option);
-            });
-        } else {
-            alert('error');
-            console.log('err');
+        option = {
+            title : {
+                text: '日志数据',
+                subtext: 'actual16-reboot',
+                x:'center'
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient : 'vertical',
+                x : 'left',
+                data: data['fields'] 
+            },
+            calculable : true,
+            series : [
+                {
+                    name:'访问来源',
+                    type:'pie',
+                    radius : '55%',
+                    center: ['50%', 225],
+                    data : data['data'],
+                }
+            ]
         };
 
+        // 执行函数
+        echarts_func('main', option)
     });
-
-};
-
-// 执行函数
-create_time = ''
-gen_div()
-push_mem_monitor()
-setInterval(function() {
-    push_mem_monitor()
-}, 8000);
+});
 
 
 {% endblock %}
