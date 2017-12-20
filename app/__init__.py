@@ -20,13 +20,10 @@ app.url_map.strict_slashes = False
 app.debug = True
 
 # set a 'SECRET_KEY' to enable the Flask session cookies
-app.config['SECRET_KEY'] = 'oF\xd3I\x98\xe5\xb4\x1a\xfb\xc77\xe3\xcc,\xc2\xd2\x05\x8b\xa9\x9b\x01\xa0t\x0f\x04\x11\x19\xcd4\x96\x8d\x14'
 app.config['SECRET_KEY'] = os.urandom(24) 
 
 #toolbar = DebugToolbarExtension(app)
 #app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
-
-#app.config['PERMANENT_SESSION_LIFETIME'] =  datetime.timedelta(minutes=1)
 
 app.config['max_token_age'] = 1800  # second
 app.config['token'] = Token(app.config['SECRET_KEY'], app.config['max_token_age'])
@@ -74,6 +71,7 @@ from app.views.v1 import api
 
 
 
+# view register
 app.register_blueprint(dashboard.mod) 
 app.register_blueprint(login.mod) 
 app.register_blueprint(users.mod) 

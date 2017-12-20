@@ -38,4 +38,4 @@ PERMISSION_POOL = (
 
 
 # log
-NGINXLOG = "/home/zhengyscn/actual16-opsweb/logs/access.log"
+NGINXLOG = os.path.join(_basedir, 'logs/access.log') 
