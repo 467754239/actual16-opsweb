@@ -8,7 +8,7 @@ import requests
 
 
 def get_hostname():
-    return { 'hostname' : "%s-%d" % (socket.gethostname(), random.randint(1, 4)) }
+    return { 'hostname' : "%s-%d" % (socket.gethostname(), random.randint(5, 7)) }
 
 def get_mem_info():
     meminfo = {}

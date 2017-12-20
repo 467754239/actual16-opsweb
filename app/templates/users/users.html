@@ -58,8 +58,8 @@
                    <td class="hidden-xs"> {{ user['role'] }} </td>
                    <td>
                        {% if session['sign']['role'] == 'admin' %}
-                           <button class="btn btn-outline btn-circle green btn-sm purple editbtn" uid={{ user['id'] }}><i class="fa fa-edit"></i> Edit</button>
-                           <button class="btn btn-outline btn-circle dark btn-sm black delbtn" uid={{ user['id'] }}><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete</button>
+                           <button class="btn btn-outline btn-circle green btn-xs purple editbtn" uid={{ user['id'] }}><i class="fa fa-edit"></i> Edit</button>
+                           <button class="btn btn-outline btn-circle dark btn-xs black delbtn" uid={{ user['id'] }}><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete</button>
                        {% endif %}
                    </td>
                </tr>

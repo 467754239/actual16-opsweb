@@ -78,10 +78,10 @@
                         <td> {{ obj[-1] }} </td>
                         <td>
                             {% if session['sign']['role'] == 'admin' %}
-                                <button type="button" class="btn btn-warning btn-sm edit_asset" pk={{ obj[0] }}>修改</button>
-                                <button type="button" class="btn btn-danger btn-sm del_asset" pk={{ obj[0] }}>删除</button>
+                                <button type="button" class="btn btn-warning btn-xs edit_asset" pk={{ obj[0] }}>修改</button>
+                                <button type="button" class="btn btn-danger btn-xs del_asset" pk={{ obj[0] }}>删除</button>
                             {% endif %}
-                            <button type="button" class="btn btn-success btn-sm info_asset" pk={{ obj[0] }}>详情</button>
+                            <button type="button" class="btn btn-success btn-xs info_asset" pk={{ obj[0] }}>详情</button>
                         </td>
                     </tr>
                 {% endfor %}	
