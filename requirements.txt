@@ -38,6 +38,7 @@ lxml==4.1.1
 mailthon==0.1.1
 Markdown==2.6.9
 MarkupSafe==1.0
+message==0.2.1
 MySQL-python==1.2.5
 oauthlib==2.0.6
 paramiko==2.4.0
@@ -65,6 +66,7 @@ texttable==1.1.1
 Twisted==17.9.0
 tzlocal==1.5.1
 urllib3==1.22
+uWSGI==2.0.15
 w3lib==1.18.0
 Werkzeug==0.12.2
 zope.interface==4.4.3
