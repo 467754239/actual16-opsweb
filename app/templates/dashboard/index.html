@@ -15,61 +15,75 @@ Dashboard
 
 
 <div class="row">
-    <div class="col-md-4">
-        <div class="dashboard-stat blue">
+
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <a class="dashboard-stat dashboard-stat-v2 blue" href="#">
             <div class="visual">
-                <i class="fa fa-briefcase fa-icon-medium"></i>
+                <i class="fa fa-comments"></i>
             </div>
-            <div class="details">
-                <div class="number" id="users_count"> </div>
-                <div class="desc"> 用户数量 </div>
+            <div class="details" data-counter="cost">
+                <div class="number" id="users_count">
+                    <!--<span>1998843.53</span>&nbsp;元-->
+                </div>
+                <div class="desc"> 注册用户数 </div>-
             </div>
-            <a class="more" href="javascript:;"> View more
-                <i class="m-icon-swapright m-icon-white"></i>
-            </a>
+        </a>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <a class="dashboard-stat dashboard-stat-v2 red" href="#">
+            <div class="visual">
+                <i class="fa fa-bar-chart-o"></i>
+            </div>
+            <div class="details" data-counter="host">
+                <div class="number" id="hosts_count">
+                    <!--<span>1601</span>&nbsp;台-->
+                </div>
+                <div class="desc"> 主机数量 </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <a class="dashboard-stat dashboard-stat-v2 green" href="#">
+            <div class="visual">
+                <i class="fa fa-shopping-cart"></i>
+            </div>
+            <div class="details" data-counter="diff_host">
+                <div class="number">
+                    <span>0</span>&nbsp;台
+                </div>
+                <div class="desc"><span>2017-10</span>月到<span>2017-11</span> 月的主机增长数 </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <a class="dashboard-stat dashboard-stat-v2 purple" href="#">
+            <div class="visual">
+                <i class="fa fa-globe"></i>
+            </div>
+            <div class="details" data-counter="diff_cost">
+                <div class="number">
+                    <span>0</span>&nbsp;元
+                </div>
+                <div class="desc"><span>2017-10</span>月到<span>2017-11</span>月的主机费用差</div>
+            </div>
+        </a>
+    </div>
+</div>
+
+<div class='row' style="margin-top:20px">
+    <div class='col-md-12'>
+        <div class="note note-success">
+             <h4 class="block">Success! Some Header Goes Here</h4>
+             <p> Duis mollis, est non commodo luctus, nisi erat mattis consectetur purus sit amet porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. </p>
         </div>
     </div>
 
-    <div class="col-md-4">
-        <div class="dashboard-stat red">
-            <div class="visual">
-                   <i class="fa fa-shopping-cart"></i>
-               </div>
-               <div class="details">
-                   <div class="number" id="hosts_count"> </div>
-                   <div class="desc"> 主机数量 </div>
-               </div>
-               <a class="more" href="javascript:;"> View more
-                   <i class="m-icon-swapright m-icon-white"></i>
-               </a>
-            </div>
-        </div>
-
-        <div class="dashboard-stat green">
-            <div class="visual">
-                <i class="fa fa-group fa-icon-medium"></i>
-            </div>
-            <div class="details">
-                <div class="number"> $670.54 </div>
-                <div class="desc"> Average Orders </div>
-            </div>
-            <a class="more" href="javascript:;"> View more
-                <i class="m-icon-swapright m-icon-white"></i>
-            </a>
+    <div class='col-md-12'>
+        <div class="note note-warning">
+            <h4 class="block">Warning! Some Header Goes Here</h4>
+            <p> Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit mattis consectetur purus sit amet. Cras mattis consectetur purus sit amet fermentum. </p>
         </div>
     </div>
-</div>
-</div>
-
-
-<div class="note note-success">
-     <h4 class="block">Success! Some Header Goes Here</h4>
-     <p> Duis mollis, est non commodo luctus, nisi erat mattis consectetur purus sit amet porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. </p>
-</div>
-
-<div class="note note-warning">
-    <h4 class="block">Warning! Some Header Goes Here</h4>
-    <p> Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit mattis consectetur purus sit amet. Cras mattis consectetur purus sit amet fermentum. </p>
 </div>
 
 {% filter markdown %}
@@ -89,12 +103,12 @@ markdown
 
 $( document ).ready(function() {
     $.get("/api/v1/assets/count", function(data) {
-        console.log(data)
-        $("#hosts_count").html(data.data)
+        var html = "<span>" + data.data + "</span>&nbsp;台"
+        $("#hosts_count").html(html)
     });
     $.get("/api/v1/users/count", function(data) {
-        console.log(data)
-        $("#users_count").html(data.data)
+        var html = "<span>" + data.data + "</span>&nbsp;个"
+        $("#users_count").html(html)
     });
 });
 

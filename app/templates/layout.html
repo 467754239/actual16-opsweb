@@ -45,14 +45,14 @@
                         <li class="dropdown dropdown-user">
                             <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                                 <img alt="" class="img-circle" src="/static/layouts/layout/img/avatar3_small.jpg" />
-                                {% if session %}
-                                    <span class="username username-hide-on-mobile"> {{ session['sign']['username'] }} </span>
+                                {% if session.has_key('sign') %}
+                                    <span class="username username-hide-on-mobile"> {{ session['sign']['cn_name'] }} </span>
                                 {% endif %}
                                 <i class="fa fa-angle-down"></i>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-default">
                                 <li >
-                                    <a href="#"><i class="icon-user"></i> 个人详情 </a>
+                                    <a href="/users/profile"><i class="icon-user"></i> 个人详情 </a>
                                 </li>
                                 <li >
                                     <a href="/logout"><span class="glyphicon glyphicon-off" aria-hidden="true"></span> 退出 </a>

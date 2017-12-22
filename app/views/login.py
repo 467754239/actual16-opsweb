@@ -70,11 +70,11 @@ def login():
         app.logger.info('login info:%s, ok:%s' % (loginInfo, dbok))
 
         if dbok or github_ok:
-            role = get_role_from_username(username)
+            role, cn_name = get_role_from_username(username)
             if role:
-                session['sign'] = { 'username' : username, 'role' : role[0] }
+                session['sign'] = { 'username' : username, 'role' : role[0], 'cn_name' : cn_name }
             else:
-                session['sign'] = { 'username' : username, 'role' : None }
+                session['sign'] = { 'username' : username, 'role' : None, 'cn_name' : 'cn_name'}
             return jsonify({"code" : 0, 'errmsg' : None})
         else:
             return jsonify({"code" : -1, 'message' : loginInfo})

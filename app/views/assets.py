@@ -39,7 +39,7 @@ mod = Blueprint('assets', __name__, url_prefix='/assets')
     2. POST 增加用户
 '''
 @mod.route('/', methods=['GET', 'POST'])
-#@login_required
+@login_required
 def assets():
 
     if request.method == 'GET':

@@ -79,7 +79,7 @@ def updateUserinfo(data, uid):
 
 
 def get_role_from_username(username):
-    sql = '''SELECT role FROM users WHERE username = '%s';''' % username
+    sql = '''SELECT role, cn_name FROM users WHERE username = '%s';''' % username
     return select_result(sql)
 
 

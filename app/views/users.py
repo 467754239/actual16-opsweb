@@ -31,12 +31,7 @@ mod = Blueprint('users', __name__, url_prefix='/users')
 def users():
 
     if request.method == 'GET':
-
-        #app.logger.info('>>> users headers: \n%s' % request.headers)
-        #app.logger.info('>>> users  cookies: %s' % request.cookies)
-
-        users = get_users()
-        return render_template('users/users.html', users=users)
+        return render_template('users/users.html', users=get_users())
 
     elif request.method == 'POST':
         data = request.form.to_dict()
@@ -122,9 +117,20 @@ def usersEdit():
     return jsonify(response)
 
 
+''' User Profile
 '''
+@mod.route('/profile', methods=['GET'])
+@login_required
+def user_profile():
+    app.logger.debug("user profile")
+    return render_template("users/user_profile.html")
+
+''' User Group
 '''
 @mod.route('/group', methods=['GET'])
 @login_required
-def usersGroup():
-    return render_template("users/usergroup.html")
+def user_group():
+    app.logger.debug("user Group")
+    return render_template("users/user_group.html")
+
+
