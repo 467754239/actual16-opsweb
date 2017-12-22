@@ -72,7 +72,7 @@ def login():
         if dbok or github_ok:
             role, cn_name = get_role_from_username(username)
             if role:
-                session['sign'] = { 'username' : username, 'role' : role[0], 'cn_name' : cn_name }
+                session['sign'] = { 'username' : username, 'role' : role, 'cn_name' : cn_name }
             else:
                 session['sign'] = { 'username' : username, 'role' : None, 'cn_name' : 'cn_name'}
             return jsonify({"code" : 0, 'errmsg' : None})
