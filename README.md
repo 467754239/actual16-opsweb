@@ -1,8 +1,11 @@
 # OpsWeb Platform(beta)
 
-## Deploy
-> nginx + uwsgi + flask + virtualenv
 
+## 代理模式 
+nginx + uwsgi + flask + virtualenv
+
+
+## 配置
 1. /etc/nginx/conf.d/uwsgi.conf
 
 ```bash
