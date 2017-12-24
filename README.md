@@ -1,20 +1,11 @@
-# OpsWeb Platform
+# OpsWeb Platform(beta)
 
-- [x] flask
-- [x] mysql
-- [x] redis
-- [x] bootstrap
-- [x] paramiko
-- [x] echarts 
-
-
-
-# Deploy
-> flask + nginx + uwsgi + virtualenv
+## Deploy
+> nginx + uwsgi + flask + virtualenv
 
 1. /etc/nginx/conf.d/uwsgi.conf
 
-```
+```bash
 server {
     listen       8000;
     server_name  112.74.164.107;
@@ -40,7 +31,7 @@ server {
 
 2. /etc/init.d/uwsgi.ini
 
-```
+```bash
 [uwsgi]
 chdir           =  /home/zhengyscn/actual16-opsweb 
 home            =  /home/zhengyscn/venv
@@ -58,47 +49,22 @@ gid             =  uwsgi
 
 3. start uwsgi
 
-```
-uwsgi --ini uwsgi.ini 
-```
-
-
-## 快速生成.gitignore文件
-
-```python
-https://www.gitignore.io/
+```bash
+$ cd bin
+$ sh start.sh
 ```
 
-## 快速生成requirement.txt的安装文件
-
-```python
-pip freeze > requirements.txt
-```
-
-## 安装所需要的文件
+4. 安装所需要的文件
 
 ```python
 pip install -r requirement.txt
 ```
 
-
-## flask-mail
-
-```python
-https://pythonhosted.org/Flask-Mail/
-
-https://github.com/eugene-eeo/mailthon
+## 参考
 ```
-
-
-## flask upload file
-```
+# flask upload file
 http://flask.pocoo.org/docs/0.10/patterns/fileuploads/
-```
 
-
-
-```
 ## return false
 http://www.jb51.net/article/40564.htm
 
