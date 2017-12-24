@@ -1,7 +1,11 @@
 # OpsWeb Platform(beta)
 
+```
+如果对大家有帮助，欢迎点击Start，多谢。
+```
 
-## 代理模式 
+
+## 工作(代理)模式 
 nginx + uwsgi + flask + virtualenv
 
 
