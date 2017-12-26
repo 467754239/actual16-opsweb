@@ -39,7 +39,7 @@ def before_request():
     # http://flask.pocoo.org/docs/0.12/api/#flask.session.permanent
     # https://www.jordanbonser.com/flask-session-timeout.html
     session.permanent = True  # False
-    app.permanent_session_lifetime = datetime.timedelta(minutes=30)	# default 31days
+    app.permanent_session_lifetime = datetime.timedelta(minutes=60)	# default 31days
     session.modified = True
 
 
@@ -68,16 +68,31 @@ def login():
         loginInfo, dbok = authentication(username, password)
         github_loginInfo, github_ok = github_auth(username, password)
         app.logger.info('login info:%s, ok:%s' % (loginInfo, dbok))
+        app.logger.info('github info:%s, ok:%s' % (github_loginInfo, github_ok))
 
-        if dbok or github_ok:
+        if dbok:
             role, cn_name = get_role_from_username(username)
-            if role:
-                session['sign'] = { 'username' : username, 'role' : role, 'cn_name' : cn_name }
-            else:
-                session['sign'] = { 'username' : username, 'role' : None, 'cn_name' : 'cn_name'}
+            session['sign'] = { 'username' : username, 'role' : role, 'cn_name' : cn_name }
+            return jsonify({"code" : 0, 'errmsg' : None})
+        elif github_ok:
+            session['sign'] = { 'username' : username, 'role' : None, 'cn_name' : 'cn_name'}
             return jsonify({"code" : 0, 'errmsg' : None})
         else:
-            return jsonify({"code" : -1, 'message' : loginInfo})
+            return jsonify({"code" : -1, 'message' : github_loginInfo})
+
+        #if dbok or github_ok:
+        #    try:
+        #        role, cn_name = get_role_from_username(username)
+        #    except Exception as e:
+        #        app.logger.error(e.args)
+        #    app.logger.debug("role:%s, cn_name:%s." % (role, cn_name))
+        #    if role:
+        #        session['sign'] = { 'username' : username, 'role' : role, 'cn_name' : cn_name }
+        #    else:
+        #        session['sign'] = { 'username' : username, 'role' : None, 'cn_name' : 'cn_name'}
+        #    return jsonify({"code" : 0, 'errmsg' : None})
+        #else:
+        #    return jsonify({"code" : -1, 'message' : loginInfo})
     else:
         return render_template('login.html')
 

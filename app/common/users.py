@@ -1,5 +1,6 @@
 
 
+from app import app
 from app.models import execute_sql
 from app.models import select_result
 from app.models import select_all_result
@@ -80,6 +81,7 @@ def updateUserinfo(data, uid):
 
 def get_role_from_username(username):
     sql = '''SELECT role, cn_name FROM users WHERE username = '%s';''' % username
+    app.logger.debug(select_result(sql))
     return select_result(sql)
 
 

@@ -1,4 +1,6 @@
 tests/
+tmp/
+sql/
 
 # Created by https://www.gitignore.io/api/git,vim,linux,python,pycharm
 

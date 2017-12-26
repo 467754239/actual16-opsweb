@@ -8,12 +8,15 @@ from flask import Flask, session, g, render_template
 from flask_script import Manager
 from flaskext.markdown import Markdown
 from flask_debugtoolbar import DebugToolbarExtension
+from flask_sqlalchemy import SQLAlchemy
+#from flask.ext.sqlalchemy import SQLAlchemy
 import flask_excel as excel
 
 from app.common.tokeybase import Token
 
 app = Flask(__name__)
 app.config.from_object('config')
+#app.config.from_object('conf.TestConfig')
 app.url_map.strict_slashes = False
 
 # the toolbar is only enabled in debug mode:
@@ -22,8 +25,8 @@ app.debug = True
 # set a 'SECRET_KEY' to enable the Flask session cookies
 app.config['SECRET_KEY'] = os.urandom(24) 
 
-#toolbar = DebugToolbarExtension(app)
-#app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
+toolbar = DebugToolbarExtension(app)
+app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
 app.config['max_token_age'] = 1800  # second
 app.config['token'] = Token(app.config['SECRET_KEY'], app.config['max_token_age'])
@@ -58,6 +61,23 @@ app.config['conn'] = conn
 app.config['cursor'] = cursor
 
 
+# Redis
+
+
+# ORM
+# dialect+driver://username:password@host:port/database
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost:3306/sqlalchemy?charset=utf8'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://%s:%s@%s:%s/%s?charset=%s' % (\
+                                                          app.config['MYSQLUSER'],
+                                                          app.config['MYSQLPASS'],
+                                                          app.config['MYSQLHOST'],
+                                                          app.config['MYSQLPORT'],
+                                                          app.config['MYSQLDB'],
+                                                          app.config['MYSQLCHARSET'],
+                                                          )
+db = SQLAlchemy(app)
+
 
 # view
 from app.views import dashboard
@@ -67,6 +87,7 @@ from app.views import assets
 from app.views import monitor 
 from app.views import error 
 from app.views import control
+from app.views import redisqueue 
 from app.views.v1 import api 
 
 
@@ -79,4 +100,5 @@ app.register_blueprint(assets.mod)
 app.register_blueprint(monitor.mod) 
 app.register_blueprint(error.mod) 
 app.register_blueprint(control.mod) 
+app.register_blueprint(redisqueue.mod) 
 app.register_blueprint(api.mod) 

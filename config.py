@@ -36,6 +36,23 @@ PERMISSION_POOL = (
     '106.38.84.18',
     )
 
+# Redis
+REDIS_HOST  = '127.0.0.1'
+REDIS_PORT  = 6379
+REDIS_DB    = 0
 
 # log
 NGINXLOG = os.path.join(_basedir, 'logs/access.log') 
+
+
+class TestConfig:
+    pass
+
+
+
+class DevConfig:
+    pass
+
+
+class ProductionConfig:
+    pass
