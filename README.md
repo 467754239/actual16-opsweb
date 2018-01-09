@@ -1,7 +1,9 @@
 # OpsWeb Platform(beta)
 
+[demo](http://www.vksrc.com:8000)
+
 ```
-如果对大家有帮助，欢迎点击Start，多谢。
+Start
 ```
 
 
@@ -14,8 +16,8 @@ nginx + uwsgi + flask + virtualenv
 
 ```bash
 server {
-    listen       8000;
-    server_name  112.74.164.107;
+    listen       80:;
+    server_name  localhost;
 
     location / {
         include uwsgi_params;
