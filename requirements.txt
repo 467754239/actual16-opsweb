@@ -74,5 +74,5 @@ tzlocal==1.5.1
 urllib3==1.22
 uWSGI==2.0.15
 w3lib==1.18.0
-Werkzeug==0.12.2
+Werkzeug==0.15.3
 zope.interface==4.4.3
