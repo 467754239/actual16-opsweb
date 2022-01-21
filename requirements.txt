@@ -30,7 +30,7 @@ hyperlink==17.3.1
 idna==2.6
 incremental==17.5.0
 ipaddress==1.0.18
-ipython==1.2.1
+ipython==7.16.3
 itsdangerous==0.24
 Jinja2==2.9.6
 lml==0.0.1
