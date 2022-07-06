@@ -36,7 +36,7 @@ Jinja2==2.9.6
 lml==0.0.1
 logconfig==0.4.0
 logutils==0.3.5
-lxml==4.1.1
+lxml==4.9.1
 mailthon==0.1.1
 Markdown==2.6.9
 MarkupSafe==1.0
